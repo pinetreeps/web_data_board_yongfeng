@@ -6,7 +6,8 @@
 
 # --------------开关控制  --------------
 # 这个参数主要是用于控制远程ssh连接数据库还是本地连接数据库 False为部署线上，True为本地
-IS_LOCAL_DB = True
+# IS_LOCAL = True
+IS_LOCAL = False
 
 # --------------文件目录  --------------
 # file_dir = "/Users/pinetree_mac/ps_use/py_works/document_tools/app/"

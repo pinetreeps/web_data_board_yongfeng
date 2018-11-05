@@ -20,7 +20,7 @@ bootstrap = Bootstrap(app)
 
 @app.route('/')
 def hello_world():
-    return '<h1>Hello World!</h1>'
+    return '<h1>Hello World! yong feng!</h1>'
 
 
 # 登陆路由
