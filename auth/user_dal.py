@@ -4,7 +4,7 @@
 # python 3.6
 # Date: 2018/11/05
 
-from yongfeng.utils import mysql_utils
+from utils import mysql_utils
 from . import hash
 
 from flask_login import UserMixin
