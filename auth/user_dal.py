@@ -5,7 +5,7 @@
 # Date: 2018/11/05
 
 from utils import mysql_utils
-from . import hash
+# from . import hash
 
 from flask_login import UserMixin
 
@@ -107,6 +107,14 @@ class UserDal:
             return True
 
 if __name__ == '__main__':
+    data = {'uid':'123'}
+    print(type(data.get('uid')))
+    # exit()
+    user = UserDal().check_uid(data)
+    print(user.to_dict())
+
+    exit()
+
     row = (11, '123', 'abc', '123', 'admin', 'Tom', None, None)
     user = User(uid=row[1], uname=row[2], usergroup=row[3], nickname=row[4], mail=row[5], phone=row[6])
 

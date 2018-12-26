@@ -5,7 +5,7 @@
 # Date: 2018/05/08
 
 # --------------开关控制  --------------
-# 这个参数主要是用于控制远程ssh连接数据库还是本地连接数据库 False为部署线上，True为本地
+# 这个参数主要是用于控制远程ssh连接数据库还是本地连接数据库 False为部署线上，True为本地(需要远程访问数据库)
 # IS_LOCAL = True
 IS_LOCAL = False
 
@@ -28,6 +28,7 @@ SSH_PASSWORD = 'pangsongpangsong'
 
 # --------------用户注册邀请码--------------
 APPLY_CODE = 'yongfeng2018'
+
 
 
 
