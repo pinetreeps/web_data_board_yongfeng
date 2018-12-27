@@ -318,7 +318,7 @@ def energy_electricity_overview():
 # 3.3.3设备用电情况（物联网）
 # http://.../energy_electricity
 @app.route('/energy_electricity', methods=['GET', 'POST'])
-def energy_electricity_overview():
+def energy_electricity():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -343,7 +343,7 @@ def energy_electricity_overview():
 # 3.3.4用气情况（燃气公司或手动输入）
 # http://.../energy_gas
 @app.route('/energy_gas', methods=['GET', 'POST'])
-def energy_electricity_overview():
+def energy_gas():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -394,7 +394,7 @@ def energy_water_overview():
 # 3.3.6用热情况（物联网）
 # http://.../energy_check_hot
 @app.route('/energy_check_hot', methods=['GET', 'POST'])
-def energy_water_overview():
+def energy_check_hot():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
