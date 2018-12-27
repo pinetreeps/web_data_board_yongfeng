@@ -115,7 +115,7 @@ def register_name_check():
     else:
         return render_template('404.html')
 
-# -------------------------信息查询接口----------------------------
+# -------------------------3.1、项目概况模块----------------------------
 # 园区概况接口
 @app.route('/area_overview', methods=['GET', 'POST'])
 def area_overview():
@@ -137,6 +137,131 @@ def area_overview():
     else:
         return render_template('404.html')
 
+# 建筑概况接口
+# http://.../building_overview
+@app.route('/building_overview', methods=['GET', 'POST'])
+def building_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'building_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_building_overview())
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# -------------------------3.2、项目概况模块----------------------------
+# 3.2.1室外环境 实时（物联网）
+# http://.../env_outdoor
+@app.route('/env_outdoor', methods=['GET', 'POST'])
+def env_outdoor():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_env_outdoor())
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 3.2.2室外环境 历史数据（物联网）
+# http://.../env_outdoor_history
+@app.route('/env_outdoor_history', methods=['GET', 'POST'])
+def env_outdoor_history():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'data_type' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.env_outdoor_history(data.get('data_type')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 3.2.3室内环境 实时（物联网）
+# http://.../env_indoor
+@app.route('/env_indoor', methods=['GET', 'POST'])
+def env_indoor():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_env_indoor())
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 3.2.4室内环境 历史（物联网）
+# http://.../env_indoor_history
+@app.route('/env_indoor_history', methods=['GET', 'POST'])
+def env_indoor_history():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'data_type' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.env_indoor_history(data.get('data_type')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8290, debug=True)
