@@ -162,7 +162,7 @@ def building_overview():
     else:
         return render_template('404.html')
 
-# -------------------------3.2、项目概况模块----------------------------
+# -------------------------3.2、环境信息模块----------------------------
 # 3.2.1室外环境 实时（物联网）
 # http://.../env_outdoor
 @app.route('/env_outdoor', methods=['GET', 'POST'])
@@ -262,6 +262,161 @@ def env_indoor_history():
             return post_json(data='uid校验失败')
     else:
         return render_template('404.html')
+
+# -------------------------3.3、用能信息模块----------------------------
+# 3.3.1用能总览
+# http://.../energy_overview
+@app.route('/energy_overview', methods=['GET', 'POST'])
+def energy_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_energy_overview())
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
+# 3.3.2园区、建筑用电情况（物联网）
+# http://.../energy_electricity_overview
+@app.route('/energy_electricity_overview', methods=['GET', 'POST'])
+def energy_electricity_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_energy_electricity_overview(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 3.3.3设备用电情况（物联网）
+# http://.../energy_electricity
+@app.route('/energy_electricity', methods=['GET', 'POST'])
+def energy_electricity_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_energy_electricity(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 3.3.4用气情况（燃气公司或手动输入）
+# http://.../energy_gas
+@app.route('/energy_gas', methods=['GET', 'POST'])
+def energy_electricity_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_energy_gas(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 3.3.5用水情况（物联网）
+# http://.../energy_water_overview
+@app.route('/energy_water_overview', methods=['GET', 'POST'])
+def energy_water_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_energy_water_overview(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
+# 3.3.6用热情况（物联网）
+# http://.../energy_check_hot
+@app.route('/energy_check_hot', methods=['GET', 'POST'])
+def energy_water_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_energy_check_hot(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8290, debug=True)
