@@ -283,7 +283,7 @@ def energy_overview():
             return '输入参数不完整或者不正确'
         # 获取数据
         if user is not None:
-            return post_json(0, 'success', check_info.get_energy_overview(check_id))
+            return post_json(0, 'success', check_info.get_energy_overview(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
     else:
