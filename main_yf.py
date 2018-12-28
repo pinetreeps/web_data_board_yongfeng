@@ -223,7 +223,7 @@ def env_indoor():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
-            if 'uid' in data.keys():
+            if 'uid' in data.keys() and 'position_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
@@ -232,7 +232,7 @@ def env_indoor():
             return '输入参数不完整或者不正确'
         # 获取数据
         if user is not None:
-            return post_json(0, 'success', check_info.get_env_indoor())
+            return post_json(0, 'success', check_info.get_env_indoor(data.get('position_id')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -248,7 +248,7 @@ def env_indoor_history():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
-            if 'uid' in data.keys() and 'data_type' in data.keys():
+            if 'uid' in data.keys() and 'position_id' in data.keys() and 'data_type' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
@@ -257,7 +257,7 @@ def env_indoor_history():
             return '输入参数不完整或者不正确'
         # 获取数据
         if user is not None:
-            return post_json(0, 'success', check_info.env_indoor_history(data.get('data_type')))
+            return post_json(0, 'success', check_info.env_indoor_history(data.get('position_id'), data.get('data_type')))
         else:
             return post_json(data='uid校验失败')
     else:

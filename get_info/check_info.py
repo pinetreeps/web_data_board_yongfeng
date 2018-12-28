@@ -207,27 +207,24 @@ def env_outdoor_history(data_type):
         }
     return test_data_env_outdoor_history
 
-def get_env_indoor():
+def get_env_indoor(position_id):
     '''
     查询室内环境 实时
     :return: dict
 
     '''
     # # 测试数据
-    test_data_env_outdoor = {
-        "temperature":"-6",
-        "humidity":"15",
-        "wind_direction":"东南",
-        "wind_speed":"1.2",
-        "precipitation":"0",
-        "air_pressure":"102.3",
-        "voc": "2.7",
+    test_data = {
+        "position_name":"1号楼{}位置".format(position_id),
+        "temperature":"26",
+        "humidity":"40",
+        "voc":"0",
         "pm2.5":"120"
     }
-    return test_data_env_outdoor
+    return test_data
 
 
-def env_indoor_history(data_type):
+def env_indoor_history(position_id, data_type):
     '''
     查询室内环境 历史数据
     :return: dict
@@ -236,6 +233,7 @@ def env_indoor_history(data_type):
     test_data_env_indoor_history = {}
     if 'year' == data_type:
         test_data_env_indoor_history = {
+            "position_name": "位置在{}".format(position_id),
             "data_list":[
             {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
             {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "40", "wind_speed": "1.2", "precipitation": "20", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
@@ -253,6 +251,7 @@ def env_indoor_history(data_type):
         }
     elif 'month' == data_type:
         test_data_env_indoor_history = {
+            "position_name": "位置在{}".format(position_id),
             "data_list": [
                 {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
                 {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
@@ -289,6 +288,7 @@ def env_indoor_history(data_type):
 
     elif 'day' == data_type:
         test_data_env_indoor_history = {
+            "position_name": "位置在{}".format(position_id),
             "data_list": [
                 {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
                  "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
