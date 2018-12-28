@@ -274,7 +274,7 @@ def energy_overview():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
-            if 'uid' in data.keys():
+            if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
@@ -283,7 +283,7 @@ def energy_overview():
             return '输入参数不完整或者不正确'
         # 获取数据
         if user is not None:
-            return post_json(0, 'success', check_info.get_energy_overview())
+            return post_json(0, 'success', check_info.get_energy_overview(check_id))
         else:
             return post_json(data='uid校验失败')
     else:

@@ -342,18 +342,119 @@ def env_indoor_history(position_id, data_type):
         }
     return test_data_env_indoor_history
 
-def get_energy_overview():
+def get_energy_overview(check_id):
     '''
     查询用能概况
     :return: dict
     '''
     # # 测试数据
     test_data = {
-        "energy":"12561",
-        "electricity":"456",
-        "gas":"1226",
-        "water":"410",
-        "hot":"134"
+        "check_name":"{}用能情况".format(check_id),
+        "electricity":[
+            {
+                "time":"周一",
+                "value_list":[{"name":"建筑","value":"231",},{"name":"空调", "value":"3523",},{"name":"电器","value":"2223",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周二",
+                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周三",
+                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周四",
+                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周五",
+                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周六",
+                "value_list": [{"name": "建筑", "value": "31", }, {"name": "空调", "value": "33", },
+                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "3", }, ],
+            },
+            {
+                "time": "周日",
+                "value_list": [{"name": "建筑", "value": "10", }, {"name": "空调", "value": "23", },
+                               {"name": "电器", "value": "20", }, {"name": "其他", "value": "23", }, ],
+            },
+
+        ],
+        "gas":[
+            {
+                "time":"周一",
+                "value_list":[{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周二",
+                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周三",
+                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周四",
+                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周五",
+                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周六",
+                "value_list": [{"name":"采暖","value":"21",},{"name":"厨房", "value":"3",},{"name":"其他","value":"11",},],
+            },
+            {
+                "time": "周日",
+                "value_list": [{"name":"采暖","value":"31",},{"name":"厨房", "value":"52",},{"name":"其他","value":"12",},],
+            },
+
+        ],
+        "water":[
+            {
+                "time":"周一",
+                "value_list":[{"name":"生活","value":"231",},{"name":"空调", "value":"3523",},{"name":"厨房","value":"2223",},{"name":"其他","value":"1123",},],
+            },
+            {
+                "time": "周二",
+                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周三",
+                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周四",
+                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周五",
+                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
+                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
+            },
+            {
+                "time": "周六",
+                "value_list": [{"name": "生活", "value": "31", }, {"name": "空调", "value": "33", },
+                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "3", }, ],
+            },
+            {
+                "time": "周日",
+                "value_list": [{"name": "生活", "value": "10", }, {"name": "空调", "value": "23", },
+                               {"name": "厨房", "value": "20", }, {"name": "其他", "value": "23", }, ],
+            },
+
+        ],
     }
     return test_data
 
@@ -439,12 +540,18 @@ def get_energy_electricity_overview(check_id):
             {"history_time": "23", "history_value": "226"},
             {"history_time": "0", "history_value": "26"},
         ],
-        "electricity_ratio":[
+        "electricity_ratio1":[
             {"ratio_id":"floor01", "ratio_name":"1号楼*层01房间", "ratio_value":"45"},
             {"ratio_id":"floor02", "ratio_name":"1号楼*层02房间", "ratio_value":"85"},
             {"ratio_id":"floor03", "ratio_name":"1号楼*层03房间", "ratio_value":"95"},
             {"ratio_id":"floor04", "ratio_name":"1号楼*层04房间", "ratio_value":"25"},
             {"ratio_id":"floor05", "ratio_name":"1号楼*层05房间", "ratio_value":"15"},
+        ],
+        "electricity_ratio2": [
+            {"ratio_id": "b01","ratio_name": "照明","ratio_value": "345"},
+            {"ratio_id": "b02","ratio_name": "空调","ratio_value": "3145"},
+            {"ratio_id": "b03","ratio_name": "电器","ratio_value": "1345"},
+            {"ratio_id": "b03","ratio_name": "其他","ratio_value": "145"},
         ]
     }
     return test_data
