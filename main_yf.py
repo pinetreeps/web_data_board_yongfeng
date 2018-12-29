@@ -81,11 +81,11 @@ def register():
                 if data.get('apply_code') == config.APPLY_CODE:
                     success = user_dal.UserDal().register(data)
                 else:
-                    return '邀请码不正确'
+                    return post_json(2, 'success', data='邀请码不正确')
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(1, 'failed', data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(1, 'failed', data='输入参数不完整或者不正确')
         if success:
             return post_json(0, 'success', data='注册成功')
         else:
