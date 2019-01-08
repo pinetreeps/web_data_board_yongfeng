@@ -14,10 +14,11 @@ import config
 from get_info import check_info
 
 from flask_bootstrap import Bootstrap
-
+from flask_cors import CORS
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+CORS(app, supports_credentials=True)
 
 
 @app.route('/')
