@@ -424,7 +424,7 @@ def energy_check_hot():
 # http://.../monitor_check
 
 @app.route('/monitor_check', methods=['GET', 'POST'])
-def energy_overview():
+def monitor_check():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
