@@ -1135,7 +1135,7 @@ def get_energy_check_hot(check_id):
 
 
 
-def get_device_data(check_id):
+def get_device_ac_data(check_id):
     '''
     设备通用查询接口，使用唯一id 查询设备信息
     :return: dict
@@ -1151,26 +1151,18 @@ def get_device_data(check_id):
             "device_location":"1号楼1层",
             "device_info":[
                 {
-                    "device_info_name":"供热量",
-                    "device_info_value":"126",
-                },
-                {
-                    "device_info_name":"供冷量",
-                    "device_info_value":"216",
-                },
-                {
                     "hot_history_time":"风量",
-                    "hot_history_value":"611",
+                    "hot_history_value":"611m3",
                 }
             ],
             "device_status":[
                 {
                     "device_status_name":"室内温度",
-                    "device_status_value":"23",
+                    "device_status_value":"23摄氏度",
                 },
                 {
                     "device_status_name":"冷水阀开关状态",
-                    "device_status_value":"1",
+                    "device_status_value":"on",
                 },
                 {
                     "device_status_name":"报警信息",
@@ -1180,6 +1172,47 @@ def get_device_data(check_id):
         }
     else:
         test_data = {
+            "device_name":"空调-水泵，{}".format(check_id),
+            "device_pic":"ac_water_pump.jpg",
+            "device_sn":"ABC123",
+            "device_factory":"西门子",
+            "device_version":"cv100",
+            "device_location":"1号楼2层",
+            "device_info":[
+                {
+                    "device_info_name":"扬程",
+                    "device_info_value":"126m",
+                },
+                {
+                    "device_info_name":"流量",
+                    "device_info_value":"216m3",
+                },
+                {
+                    "hot_history_time":"功率",
+                    "hot_history_value":"3000w",
+                }
+            ],
+            "device_status":[
+                {
+                    "device_status_name":"开关状态",
+                    "device_status_value":"on",
+                },
+                {
+                    "device_status_name":"报警信息",
+                    "device_status_value":"无故障",
+                }
+            ]
+        }
+    return test_data
+
+def get_device_ea_data(check_id):
+    '''
+    设备通用查询接口，使用唯一id 查询设备信息
+    :return: dict
+    '''
+    # # 测试数据
+    if check_id[0] == 'a':
+        test_data = {
             "device_name": "智能插座，{}".format(check_id),
             "device_pic": "switch01.jpg",
             "device_sn": "ABC123{}".format(check_id),
@@ -1188,17 +1221,9 @@ def get_device_data(check_id):
             "device_location": "1号楼2层控制室",
             "device_info": [
                 {
-                    "device_info_name": "供热量",
-                    "device_info_value": "126",
+                    "device_info_name": "插座类型",
+                    "device_info_value": "5孔",
                 },
-                {
-                    "device_info_name": "供冷量",
-                    "device_info_value": "216",
-                },
-                {
-                    "hot_history_time": "风量",
-                    "hot_history_value": "611",
-                }
             ],
             "device_status": [
                 {
@@ -1211,4 +1236,74 @@ def get_device_data(check_id):
                 }
             ]
         }
+    else:
+        test_data = {
+            "device_name": "其他电器，{}".format(check_id),
+            "device_pic": "ea01.jpg",
+            "device_sn": "ABC123{}".format(check_id),
+            "device_factory": "霍尼韦尔",
+            "device_version": "",
+            "device_location": "1号楼3层控制室",
+            "device_info": [
+                {
+                    "device_info_name": "类型1",
+                    "device_info_value": "设备1",
+                },
+                {
+                    "device_info_name": "类型2",
+                    "device_info_value": "设备2",
+                },
+            ],
+            "device_status": [
+                {
+                    "device_status_name": "开关状态",
+                    "device_status_value": "on",
+                },
+            ]
+        }
+    return test_data
+
+def get_security_device_data(check_id):
+    '''
+    安防设备查询接口，使用唯一id 查询设备信息
+    :return: dict
+    '''
+    # # 测试数据
+    test_data = {
+        "device_name":"红外报警器{}".format(check_id),
+        "device_pic":"Infrared_alarm01.jpg",
+        "device_sn":"ABC123",
+        "device_factory":"西门子",
+        "device_version":"ia1001",
+        "device_location":"1号楼1层",
+        "device_status":[
+            {
+                "device_status_name":"运行状态",
+                "device_status_value":"正常",
+            },
+        ]
+    }
+    return test_data
+
+
+def get_fire_equipment_data(check_id):
+    '''
+    消防设备查询接口，使用唯一id 查询设备信息
+    :return: dict
+    '''
+    # # 测试数据
+    test_data = {
+        "device_name":"消防报警器 {}".format(check_id),
+        "device_pic":"fire_alarm01.jpg",
+        "device_sn":"ABC123",
+        "device_factory":"西门子",
+        "device_version":"fa1032",
+        "device_location":"1号楼1层",
+        "device_status":[
+            {
+                "device_status_name":"运行状态",
+                "device_status_value":"正常",
+            },
+        ]
+    }
     return test_data

@@ -420,11 +420,11 @@ def energy_check_hot():
 
 
 # -------------------------4.1、监控通用接口----------------------------
-# 4.1监控通用接口（物联网）
-# http://.../monitor_check
+# 4.1监控通用接口_空调（物联网）
+# http://.../monitor_check_ac
 
-@app.route('/monitor_check', methods=['GET', 'POST'])
-def monitor_check():
+@app.route('/monitor_check_ac', methods=['GET', 'POST'])
+def monitor_check_ac():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -440,12 +440,93 @@ def monitor_check():
             return '输入参数不完整或者不正确'
         # 获取数据
         if user is not None:
-            return post_json(0, 'success', check_info.get_device_data(data.get('check_id')))
+            return post_json(0, 'success', check_info.get_device_ac_data(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
     else:
         return render_template('404.html')
 
+
+# 4.2监控通用接口_电器（物联网）
+# http://.../monitor_check_ea
+
+@app.route('/monitor_check_ea', methods=['GET', 'POST'])
+def monitor_check_ea():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_device_ea_data(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
+# 4.3.2安防设备（物联网）
+# 例如红外报警器、门禁等
+# http://.../security_device
+
+@app.route('/security_device', methods=['GET', 'POST'])
+def security_device():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_security_device_data(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
+# 4.4 消防设备信息（物联网）
+# http://.../fire_equipment
+
+@app.route('/fire_equipment', methods=['GET', 'POST'])
+def fire_equipment():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_fire_equipment_data(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8290, debug=True)
