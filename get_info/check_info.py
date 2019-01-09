@@ -1132,3 +1132,83 @@ def get_energy_check_hot(check_id):
         ]
     }
     return test_data
+
+
+
+def get_device_data(check_id):
+    '''
+    设备通用查询接口，使用唯一id 查询设备信息
+    :return: dict
+    '''
+    # # 测试数据
+    if check_id[0] == 'a':
+        test_data = {
+            "device_name":"空调-风机盘管，{}".format(check_id),
+            "device_pic":"ac_wind.jpg",
+            "device_sn":"ABC123",
+            "device_factory":"西门子",
+            "device_version":"cv100",
+            "device_location":"1号楼1层",
+            "device_info":[
+                {
+                    "device_info_name":"供热量",
+                    "device_info_value":"126",
+                },
+                {
+                    "device_info_name":"供冷量",
+                    "device_info_value":"216",
+                },
+                {
+                    "hot_history_time":"风量",
+                    "hot_history_value":"611",
+                }
+            ],
+            "device_status":[
+                {
+                    "device_status_name":"室内温度",
+                    "device_status_value":"23",
+                },
+                {
+                    "device_status_name":"冷水阀开关状态",
+                    "device_status_value":"1",
+                },
+                {
+                    "device_status_name":"报警信息",
+                    "device_status_value":"无故障",
+                }
+            ]
+        }
+    else:
+        test_data = {
+            "device_name": "智能插座，{}".format(check_id),
+            "device_pic": "switch01.jpg",
+            "device_sn": "ABC123{}".format(check_id),
+            "device_factory": "小米",
+            "device_version": "小米智能插座",
+            "device_location": "1号楼2层控制室",
+            "device_info": [
+                {
+                    "device_info_name": "供热量",
+                    "device_info_value": "126",
+                },
+                {
+                    "device_info_name": "供冷量",
+                    "device_info_value": "216",
+                },
+                {
+                    "hot_history_time": "风量",
+                    "hot_history_value": "611",
+                }
+            ],
+            "device_status": [
+                {
+                    "device_status_name": "开关状态",
+                    "device_status_value": "on",
+                },
+                {
+                    "device_status_name": "实时电流",
+                    "device_status_value": "20mA",
+                }
+            ]
+        }
+    return test_data

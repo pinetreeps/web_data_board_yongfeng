@@ -18,6 +18,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+# 解决跨域问题
 CORS(app, supports_credentials=True)
 
 
@@ -417,6 +418,33 @@ def energy_check_hot():
     else:
         return render_template('404.html')
 
+
+# -------------------------4.1、监控通用接口----------------------------
+# 4.1监控通用接口（物联网）
+# http://.../monitor_check
+
+@app.route('/monitor_check', methods=['GET', 'POST'])
+def energy_overview():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_device_data(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
 
 
 if __name__ == '__main__':
