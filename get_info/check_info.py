@@ -1151,8 +1151,8 @@ def get_device_ac_data(check_id):
             "device_location":"1号楼1层",
             "device_info":[
                 {
-                    "hot_history_time":"风量",
-                    "hot_history_value":"611m3",
+                    "device_info_name":"风量",
+                    "device_info_value":"611m3",
                 }
             ],
             "device_status":[
@@ -1188,8 +1188,8 @@ def get_device_ac_data(check_id):
                     "device_info_value":"216m3",
                 },
                 {
-                    "hot_history_time":"功率",
-                    "hot_history_value":"3000w",
+                    "device_info_name":"功率",
+                    "device_info_value":"3000w",
                 }
             ],
             "device_status":[
