@@ -419,7 +419,7 @@ def energy_check_hot():
         return render_template('404.html')
 
 
-# -------------------------4.1、监控通用接口----------------------------
+# -------------------------4.监控通用接口----------------------------
 # 4.1监控通用接口_空调（物联网）
 # http://.../monitor_check_ac
 
@@ -474,6 +474,32 @@ def monitor_check_ea():
         return render_template('404.html')
 
 
+# 4.3.1安防摄像头（摄像头供应商）
+# http://.../security_camera
+
+@app.route('/security_camera', methods=['GET', 'POST'])
+def security_camera():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.get_security_camera_data(data.get('check_id')))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
 # 4.3.2安防设备（物联网）
 # 例如红外报警器、门禁等
 # http://.../security_device
@@ -527,6 +553,140 @@ def fire_equipment():
             return post_json(data='uid校验失败')
     else:
         return render_template('404.html')
+
+
+# -------------------------5.管理接口----------------------------
+# 5.1 用户管理
+# http://.../config_user
+
+@app.route('/config_user', methods=['GET', 'POST'])
+def config_user():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.update_user_data(data))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 5.2.1园区信息配置
+# http://.../config_area
+
+@app.route('/config_area', methods=['GET', 'POST'])
+def config_area():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.update_area_data(data))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 5.2.2建筑信息配置
+# http://.../config_building
+
+@app.route('/config_building', methods=['GET', 'POST'])
+def config_building():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.update_building_data(data))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 5.2.3房间信息配置
+# http://.../config_room
+
+@app.route('/config_room', methods=['GET', 'POST'])
+def config_room():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.update_room_data(data))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 5.2.4物业信息管理
+# http://.../config_property
+
+@app.route('/config_property', methods=['GET', 'POST'])
+def config_property():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return '输入参数不完整或者不正确'
+        else:
+            return '输入参数不完整或者不正确'
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.update_property_data(data))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8290, debug=True)

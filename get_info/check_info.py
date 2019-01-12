@@ -1263,6 +1263,36 @@ def get_device_ea_data(check_id):
         }
     return test_data
 
+
+def get_security_camera_data(check_id):
+    '''
+    安防摄像头设备查询接口，使用唯一id 查询设备信息
+    :return: dict
+    '''
+    # # 测试数据
+    test_data = {
+        "device_name":"安防摄像头1，{}".format(check_id),
+        "device_pic":"cam01.jpg",
+        "device_sn":"ABC123",
+        "device_factory":"西门子",
+        "device_version":"cv100",
+        "device_location":"1号楼1层",
+        "device_status":[
+            {
+                "device_status_name":"摄像头状态",
+                "device_status_value":"on",
+            }
+        ],
+        "camera_config":{
+            "server_ip":"207.101.67.182",
+            "user_name":"loadmin",
+            "password":"d6bf4bb9a66419380a",
+            "cam_code":"EC2004-139_1",
+        }
+    }
+    return test_data
+
+
 def get_security_device_data(check_id):
     '''
     安防设备查询接口，使用唯一id 查询设备信息
@@ -1307,3 +1337,85 @@ def get_fire_equipment_data(check_id):
         ]
     }
     return test_data
+
+
+def update_user_data(user_data_dict):
+    '''
+
+    :param user_data_dict:
+    :return:
+    '''
+    # # 测试数据
+    test_data = {
+        "password": user_data_dict.get('password'),
+        "nickname": user_data_dict.get('nickname'),
+        "phone": user_data_dict.get('phone'),
+    }
+    return test_data
+
+
+def update_area_data(data_dict):
+    '''
+
+    :param data_dict:
+    :return:
+    '''
+    # # 测试数据
+    test_data = {
+        "land_area": data_dict.get('land_area'),
+        "buildings_amount": data_dict.get('buildings_amount'),
+        "buildings_area": data_dict.get('buildings_area'),
+        "floor_area_ratio": data_dict.get('floor_area_ratio'),
+        "greening_rate": data_dict.get('greening_rate'),
+        "company_amount": data_dict.get('company_amount'),
+        "area_people_amount": data_dict.get('area_people_amount'),
+    }
+    return test_data
+
+def update_building_data(data_dict):
+    '''
+
+    :param data_dict:
+    :return:
+    '''
+    # # 测试数据
+    test_data ={
+        "building_id": data_dict.get('building_id'),
+        "building_name": data_dict.get('building_name'),
+        "building_function": data_dict.get('building_function'),
+        "building_area": data_dict.get('building_area'),
+        "building_time": data_dict.get('building_time'),
+        "building_height": data_dict.get('building_height'),
+        "building_floors": data_dict.get('building_floors'),
+    }
+    return test_data
+
+def update_room_data(data_dict):
+    '''
+
+    :param data_dict:
+    :return:
+    '''
+    # # 测试数据
+    test_data ={
+        "room_id": data_dict.get('room_id'),
+        "room_name": data_dict.get('room_name'),
+    }
+    return test_data
+
+def update_property_data(data_dict):
+    '''
+
+    :param data_dict:
+    :return:
+    '''
+    # # 测试数据
+    test_data ={
+        "date": data_dict.get('date'),
+        "gas_boiler": data_dict.get('value1'),
+        "gas_kitchen": data_dict.get('value2'),
+        "value1": data_dict.get('value3'),
+        "value2": data_dict.get('value4'),
+    }
+    return test_data
+
