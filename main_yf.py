@@ -4,6 +4,12 @@
 # python 3.6
 # Date: 2018/11/05
 
+try:
+    reload(sys)  # Python2.5 初始化后删除了 sys.setdefaultencoding 方法，我们需要重新载入
+    sys.setdefaultencoding('utf-8')
+except:
+    pass
+
 from flask import Flask,request, render_template
 import json
 from auth import user_dal
