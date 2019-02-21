@@ -22,11 +22,13 @@ bootstrap = Bootstrap(app)
 CORS(app, supports_credentials=True)
 
 
+# -------------------------测试接口----------------------------
 @app.route('/')
 def hello_world():
     return '<h1>Hello World! yong feng!</h1>'
 
 
+# -------------------------登录注册接口----------------------------
 # 登陆接口
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -200,7 +202,7 @@ def env_outdoor_history():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
-            if 'uid' in data.keys() and 'data_type' in data.keys():
+            if 'uid' in data.keys() and 'data_type' in data.keys() and data.get('data_type') in ("year", "month", "day"):
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
@@ -250,7 +252,7 @@ def env_indoor_history():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
-            if 'uid' in data.keys() and 'position_id' in data.keys() and 'data_type' in data.keys():
+            if 'uid' in data.keys() and 'position_id' in data.keys() and 'data_type' in data.keys()  and data.get('data_type') in ("year", "month", "day"):
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:

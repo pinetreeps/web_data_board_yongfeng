@@ -12,7 +12,7 @@ IS_LOCAL = False
 # --------------文件目录  --------------
 # file_dir = "/Users/pinetree_mac/ps_use/py_works/document_tools/app/"
 
-# --------------数据库配置--------------
+# --------------mysql数据库配置--------------
 
 DB_USERNAME = 'root'
 DB_PASSWORD = 'pangsongpangsong'
@@ -25,6 +25,15 @@ DB_CHARSET = 'utf8mb4'
 SSH_SERVER_IP = '39.105.61.38'
 SSH_USERNAME = 'pangsong'
 SSH_PASSWORD = 'pangsongpangsong'
+
+# --------------sql-server数据库配置--------------
+
+DB_SS_USERNAME = 'sa'
+DB_SS_PASSWORD = 'qw@123'
+DB_SS_HOST = '192.168.1.54'
+DB_SS_PORT = '1433'
+DB_SS_DATABASE = ''
+DB_SS_CHARSET = 'utf8'
 
 # --------------用户注册邀请码--------------
 APPLY_CODE = 'yongfeng2018'

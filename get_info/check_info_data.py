@@ -6,7 +6,6 @@
 '''
 三、信息接口
 '''
-
 import datetime
 from utils import mysql_utils
 
@@ -47,6 +46,34 @@ def get_area_overview():
     查询园区概况
     :return: dict
     '''
+    data_conn = mysql_utils.Database()
+    sql1 = "select * from yf_bim_area_overview"
+    row1 = data_conn.query_one(sql1)
+    print(row1)
+
+    sql2 = "select company_type, count(1) from yf_bim_companys_info group by company_type"
+    row2 = data_conn.query_all(sql2)
+    print(row2)
+
+    data_area_overview = {
+        "land_area": row1[1],
+        "buildings_amount": row1[2],
+        "buildings_area": row1[3],
+        "floor_area_ratio": row1[4],
+        "greening_rate": row1[5],
+        "company_amount": row1[6],
+        "area_people_amount": row1[7],
+        "companys_ratio": [
+            {
+                "ratio_name": row2[1][0],
+                "ratio_value": row2[1][1]
+            },
+            {
+                "ratio_name": row2[0][0],
+                "ratio_value": row2[0][1]
+            }]
+    }
+    print(data_area_overview)
     # # 测试数据
     test_data_area_overview = {
         "land_area": "29450",
@@ -66,7 +93,9 @@ def get_area_overview():
                 "ratio_value": "1"
             }]
     }
-    return test_data_area_overview
+    print(test_data_area_overview)
+    # return test_data_area_overview
+    return data_area_overview
 
 '''
 建筑概况
@@ -83,16 +112,21 @@ def get_building_overview():
     查询建筑概况
     :return: dict
     '''
+    data_conn = mysql_utils.Database()
+    sql1 = "select * from yf_bim_building_overview where id = {id}".format(id=1)
+    row1 = data_conn.query_one(sql1)
+    print(row1)
     # # 测试数据
-    test_data_building_overview = {
-        "building_name":"永丰B5综合服务楼",
-        "building_function":"综合服务楼",
-        "building_area":"7643",
-        "building_time":"2018",
-        "building_height":"25",
-        "building_floors":"5"
+    data_building_overview = {
+        "building_name": row1[1],
+        "building_function": row1[2],
+        "building_area": row1[3],
+        "building_time": row1[4],
+        "building_height": row1[5],
+        "building_floors": row1[6]
     }
-    return test_data_building_overview
+    # return test_data_building_overview
+    return data_building_overview
 
 
 def get_env_outdoor():
@@ -100,147 +134,194 @@ def get_env_outdoor():
     查询室外环境 实时
     :return: dict
     '''
-    # # 测试数据
-    test_data_env_outdoor = {
-        "temperature":"-6",
-        "humidity":"15",
-        "wind_direction":"东南",
-        "wind_speed":"1.2",
-        "precipitation":"0",
-        "air_pressure":"102.3",
-        "pm2.5":"120"
+    data_conn = mysql_utils.Database()
+    sql1 = "select * from yf_bim_env_outdoor order by ctime desc limit 1"
+    row1 = data_conn.query_one(sql1)
+    print(row1)
+    data_env_outdoor = {
+        "temperature": row1[1],
+        "humidity": row1[2],
+        "wind_direction": row1[3],
+        "wind_speed": row1[4],
+        "precipitation": row1[5],
+        "air_pressure": row1[6],
+        "pm2.5": row1[7]
     }
-    return test_data_env_outdoor
+    print(data_env_outdoor)
+    return data_env_outdoor
 
 def env_outdoor_history(data_type):
     '''
-        查询室外环境 历史数据
-        :return: dict
-        '''
-    # # 测试数据
-    test_data_env_outdoor_history = {}
-    if 'year' == data_type:
-        test_data_env_outdoor_history = {
-            "data_list":[
-            {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-            {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "40", "wind_speed": "1.2", "precipitation": "20", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "40", "wind_speed": "1.2", "precipitation": "100", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "4", "temperature_high":"20", "temperature_low":"1", "humidity": "40", "wind_speed": "1.2", "precipitation": "200", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "5", "temperature_high":"26", "temperature_low":"16", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "6", "temperature_high":"28", "temperature_low":"18", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "7", "temperature_high":"30", "temperature_low":"22", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "8", "temperature_high":"35", "temperature_low":"22", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "9", "temperature_high":"34", "temperature_low":"18", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "10", "temperature_high":"26", "temperature_low":"16", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "120"},
-            {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "500"},
-            {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "420"},
-            ]
-        }
-    elif 'month' == data_type:
-        test_data_env_outdoor_history = {
-            "data_list": [
-                {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "24", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "25", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "26", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "27", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "28", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "29", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "30", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-            ]
-        }
+    查询室外环境 历史数据
+    :return: dict
+    '''
+    data_conn = mysql_utils.Database()
 
+    # 获取查询时间
+    # start_time = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    # print(start_time)
+
+    # end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    # print(type(end_time))
+    # print(end_time)
+
+    # 初始化返回数据
+    test_data_env_outdoor_history = {}
+    data_env_outdoor_history = {"data_list":[]}
+
+    # 按年查询 显示当年每月数据
+    if 'year' == data_type:
+
+        # 获取查询时间
+        start_time = datetime.datetime.now().strftime("%Y") + "-01-01 00:01"
+        # print(start_time)
+        end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        # print(end_time)
+
+        sql1 = """
+                select DATE_FORMAT(ctime,'%%Y%%m') cut_time,
+                max(temperature), 
+                min(temperature),
+                avg(humidity),
+                avg(wind_speed),
+                avg(precipitation),
+                avg(air_pressure),
+                avg(pm25) 
+                from yf_bim_env_outdoor 
+                where ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(stime=start_time, etime=end_time)
+        print(sql1)
+        row1 = data_conn.query_all(sql1)
+        print(row1)
+
+        for row1_one in row1:
+            data_env_outdoor_history['data_list'].append({
+                "data_time": row1_one[0][-2:],
+                "temperature_high": row1_one[1],
+                "temperature_low": row1_one[2],
+                "humidity": str(row1_one[3]),
+                "wind_speed": str(row1_one[4]),
+                "precipitation": str(row1_one[5]),
+                "air_pressure": str(row1_one[6]),
+                "pm2.5": str(row1_one[7])
+            })
+        print(data_env_outdoor_history)
+
+    # 按月查询，显示30天内数据
+    elif 'month' == data_type:
+        # 获取查询时间
+        start_time = start_time = (datetime.datetime.now() - datetime.timedelta(days=30)).strftime("%Y-%m-%d %H:%M")
+        print(start_time)
+        end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        print(end_time)
+
+        sql1 = """
+                select DATE_FORMAT(ctime,'%%Y%%m%%d') cut_time,
+                max(temperature), 
+                min(temperature),
+                avg(humidity),
+                avg(wind_speed),
+                avg(precipitation),
+                avg(air_pressure),
+                avg(pm25) 
+                from yf_bim_env_outdoor 
+                where ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(stime=start_time, etime=end_time)
+        print(sql1)
+        row1 = data_conn.query_all(sql1)
+        print(row1)
+
+        for row1_one in row1:
+            data_env_outdoor_history['data_list'].append({
+                "data_time": row1_one[0][-2:],
+                "temperature_high": row1_one[1],
+                "temperature_low": row1_one[2],
+                "humidity": str(row1_one[3]),
+                "wind_speed": str(row1_one[4]),
+                "precipitation": str(row1_one[5]),
+                "air_pressure": str(row1_one[6]),
+                "pm2.5": str(row1_one[7])
+            })
+        print(data_env_outdoor_history)
+
+    # 按天查询，显示最近24小时数据
     elif 'day' == data_type:
-        test_data_env_outdoor_history = {
-            "data_list": [
-                {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "0", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-            ]
-        }
-    return test_data_env_outdoor_history
+        # 获取查询时间
+        start_time = start_time = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+        print(start_time)
+        end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        print(end_time)
+
+        sql1 = """
+                select DATE_FORMAT(ctime,'%%Y%%m%%d%%H') cut_time,
+                max(temperature), 
+                min(temperature),
+                avg(humidity),
+                avg(wind_speed),
+                avg(precipitation),
+                avg(air_pressure),
+                avg(pm25) 
+                from yf_bim_env_outdoor 
+                where ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(stime=start_time, etime=end_time)
+        print(sql1)
+        row1 = data_conn.query_all(sql1)
+        print(row1)
+
+        for row1_one in row1:
+            data_env_outdoor_history['data_list'].append({
+                "data_time": row1_one[0][-2:],
+                "temperature_high": row1_one[1],
+                "temperature_low": row1_one[2],
+                "humidity": str(row1_one[3]),
+                "wind_speed": str(row1_one[4]),
+                "precipitation": str(row1_one[5]),
+                "air_pressure": str(row1_one[6]),
+                "pm2.5": str(row1_one[7])
+            })
+        print(data_env_outdoor_history)
+
+    # return test_data_env_outdoor_history
+    return data_env_outdoor_history
 
 def get_env_indoor(position_id):
     '''
     查询室内环境 实时
     :return: dict
     '''
-    # # 测试数据
-    test_data = {
-        "position_name":"1号楼{}位置".format(get_name_by_id(position_id)),
-        "temperature":"26",
-        "humidity":"40",
-        "voc":"0",
-        "pm2.5":"120"
-    }
-    return test_data
+
+    data_conn = mysql_utils.Database()
+    if position_id == "":
+        # 默认值，取大厅数据 B5项目风机盘管控制一层自助办理区地址5的控制器
+        sql1 = "select * from yf_bim_env_indoor where position_id = 'K1_102_5L_ZZQ' order by ctime desc limit 1"
+
+    else:
+        sql1 = "select * from yf_bim_env_indoor where position_id = '{pid}' order by ctime desc limit 1".format(pid=position_id)
+    row1 = data_conn.query_one(sql1)
+    print(row1)
+    # 查不到数据
+    if row1 == None:
+        data_env_indoor = {
+            "position_name": "unknow",
+            "temperature": "0",
+            "humidity": "0",
+            "voc": "0",
+            "pm2.5": "0"
+        }
+    else:
+        data_env_indoor = {
+            "position_name": row1[2],
+            "temperature": row1[3],
+            "humidity": row1[4],
+            "voc": row1[5],
+            "pm2.5": row1[6]
+        }
+    print('data_env_indoor', data_env_indoor)
+
+    return data_env_indoor
 
 
 def env_indoor_history(position_id, data_type):
@@ -248,236 +329,272 @@ def env_indoor_history(position_id, data_type):
     查询室内环境 历史数据
     :return: dict
     '''
-    # # 测试数据
-    position_name = get_name_by_id(position_id)
-    test_data_env_indoor_history = {}
+    data_conn = mysql_utils.Database()
+
+    # 初始化返回数据
+    data_env_indoor_history = {"data_list": []}
+
+    if position_id == "":
+        # 默认值，取大厅数据 B5项目风机盘管控制一层自助办理区地址5的控制器
+        position_id = 'K1_102_5L_ZZQ'
+
+    print(position_id)
+
+
+    # 按年查询 显示当年每月数据
     if 'year' == data_type:
-        test_data_env_indoor_history = {
-            "position_name": "位置在{}".format(position_name),
-            "data_list":[
-            {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-            {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "40", "wind_speed": "1.2", "precipitation": "20", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "40", "wind_speed": "1.2", "precipitation": "100", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "4", "temperature_high":"20", "temperature_low":"1", "humidity": "40", "wind_speed": "1.2", "precipitation": "200", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "5", "temperature_high":"26", "temperature_low":"16", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "6", "temperature_high":"28", "temperature_low":"18", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "7", "temperature_high":"30", "temperature_low":"22", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "8", "temperature_high":"35", "temperature_low":"22", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "9", "temperature_high":"34", "temperature_low":"18", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "10", "temperature_high":"26", "temperature_low":"16", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "500"},
-            {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "420"},
-            ]
-        }
+        # 获取查询时间
+        start_time = datetime.datetime.now().strftime("%Y") + "-01-01 00:01"
+        # print(start_time)
+        end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        # print(end_time)
+
+        sql1 = """
+                select DATE_FORMAT(ctime,'%%Y%%m') cut_time,
+                max(temperature), 
+                min(temperature),
+                avg(humidity),
+                avg(voc),
+                avg(pm25) 
+                from yf_bim_env_indoor 
+                where position_id = '{pid}' and ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(pid=position_id, stime=start_time, etime=end_time)
+        print(sql1)
+        row1 = data_conn.query_all(sql1)
+        print(row1)
+        # 查不到数据
+        if len(row1) == 0:
+            for row1_one in range(1,13):
+                data_env_indoor_history['data_list'].append({
+                    "data_time": str(row1_one),
+                    "temperature_high": "0",
+                    "temperature_low": "0",
+                    "humidity": "0",
+                    "voc": "0",
+                    "pm2.5": "0"
+                })
+            print(data_env_indoor_history)
+
+        else:
+            for row1_one in row1:
+                data_env_indoor_history['data_list'].append({
+                    "data_time": row1_one[0][-2:],
+                    "temperature_high": row1_one[1],
+                    "temperature_low": row1_one[2],
+                    "humidity": str(row1_one[3]),
+                    "voc": str(row1_one[4]),
+                    "pm2.5": str(row1_one[5])
+                })
+            print(data_env_indoor_history)
+
     elif 'month' == data_type:
-        test_data_env_indoor_history = {
-            "position_name": "位置在{}".format(position_name),
-            "data_list": [
-                {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "24", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "25", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "26", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "27", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "28", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "29", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "30", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-            ]
-        }
+
+        # 获取查询时间
+        start_time = start_time = (datetime.datetime.now() - datetime.timedelta(days=30)).strftime("%Y-%m-%d %H:%M")
+        print(start_time)
+        end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        print(end_time)
+
+        sql1 = """
+                select DATE_FORMAT(ctime,'%%Y%%m%%d') cut_time,
+                max(temperature), 
+                min(temperature),
+                avg(humidity),
+                avg(voc),
+                avg(pm25) 
+                from yf_bim_env_indoor 
+                where position_id = '{pid}' and ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(pid=position_id, stime=start_time, etime=end_time)
+        print(sql1)
+        row1 = data_conn.query_all(sql1)
+        print(row1)
+        # 查不到数据
+        if len(row1) == 0:
+            for row1_one in range(1, 31):
+                data_env_indoor_history['data_list'].append({
+                    "data_time": str(row1_one),
+                    "temperature_high": "0",
+                    "temperature_low": "0",
+                    "humidity": "0",
+                    "voc": "0",
+                    "pm2.5": "0"
+                })
+            print(data_env_indoor_history)
+
+        else:
+            for row1_one in row1:
+                data_env_indoor_history['data_list'].append({
+                    "data_time": row1_one[0][-2:],
+                    "temperature_high": row1_one[1],
+                    "temperature_low": row1_one[2],
+                    "humidity": str(row1_one[3]),
+                    "voc": str(row1_one[4]),
+                    "pm2.5": str(row1_one[5])
+                })
+            print(data_env_indoor_history)
+
 
     elif 'day' == data_type:
-        test_data_env_indoor_history = {
-            "position_name": "位置在{}".format(position_name),
-            "data_list": [
-                {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-                {"data_time": "0", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-            ]
-        }
-    return test_data_env_indoor_history
+        # 获取查询时间
+        start_time = start_time = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+        print(start_time)
+        end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        print(end_time)
+
+
+        sql1 = """
+                select DATE_FORMAT(ctime,'%%Y%%m%%d%%H') cut_time,
+                max(temperature), 
+                min(temperature),
+                avg(humidity),
+                avg(voc),
+                avg(pm25) 
+                from yf_bim_env_indoor 
+                where position_id = '{pid}' and ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(pid=position_id, stime=start_time, etime=end_time)
+        print(sql1)
+        row1 = data_conn.query_all(sql1)
+        print(row1)
+        # 查不到数据
+        if len(row1) == 0:
+            for row1_one in range(24):
+                data_env_indoor_history['data_list'].append({
+                    "data_time": str(row1_one),
+                    "temperature_high": "0",
+                    "temperature_low": "0",
+                    "humidity": "0",
+                    "voc": "0",
+                    "pm2.5": "0"
+                })
+            print(data_env_indoor_history)
+
+        else:
+            for row1_one in row1:
+                data_env_indoor_history['data_list'].append({
+                    "data_time": row1_one[0][-2:],
+                    "temperature_high": row1_one[1],
+                    "temperature_low": row1_one[2],
+                    "humidity": str(row1_one[3]),
+                    "voc": str(row1_one[4]),
+                    "pm2.5": str(row1_one[5])
+                })
+            print(data_env_indoor_history)
+
+    return data_env_indoor_history
 
 def get_energy_overview(check_id):
     '''
     查询用能概况
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-    # # 测试数据
-    test_data = {
-        "check_name":"{} 用能情况".format(check_name),
-        "electricity":[
-            {
-                "time":"周一",
-                "value_list":[{"name":"建筑","value":"231",},{"name":"空调", "value":"3523",},{"name":"电器","value":"2223",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周二",
-                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周三",
-                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周四",
-                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周五",
-                "value_list": [{"name": "建筑", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周六",
-                "value_list": [{"name": "建筑", "value": "31", }, {"name": "空调", "value": "33", },
-                               {"name": "电器", "value": "2223", }, {"name": "其他", "value": "3", }, ],
-            },
-            {
-                "time": "周日",
-                "value_list": [{"name": "建筑", "value": "10", }, {"name": "空调", "value": "23", },
-                               {"name": "电器", "value": "20", }, {"name": "其他", "value": "23", }, ],
-            },
+    # 获取查询起止时间 一周
+    start_time = start_time = (datetime.datetime.now() - datetime.timedelta(days=7)).strftime("%Y-%m-%d %H:%M")
+    print(start_time)
+    end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    print(end_time)
 
-        ],
-        "gas":[
-            {
-                "time":"周一",
-                "value_list":[{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周二",
-                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周三",
-                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周四",
-                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周五",
-                "value_list": [{"name":"采暖","value":"231",},{"name":"厨房", "value":"3523",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周六",
-                "value_list": [{"name":"采暖","value":"21",},{"name":"厨房", "value":"3",},{"name":"其他","value":"11",},],
-            },
-            {
-                "time": "周日",
-                "value_list": [{"name":"采暖","value":"31",},{"name":"厨房", "value":"52",},{"name":"其他","value":"12",},],
-            },
+    data_conn = mysql_utils.Database()
 
-        ],
-        "water":[
-            {
-                "time":"周一",
-                "value_list":[{"name":"生活","value":"231",},{"name":"空调", "value":"3523",},{"name":"厨房","value":"2223",},{"name":"其他","value":"1123",},],
-            },
-            {
-                "time": "周二",
-                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周三",
-                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周四",
-                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周五",
-                "value_list": [{"name": "生活", "value": "231", }, {"name": "空调", "value": "3523", },
-                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "1123", }, ],
-            },
-            {
-                "time": "周六",
-                "value_list": [{"name": "生活", "value": "31", }, {"name": "空调", "value": "33", },
-                               {"name": "厨房", "value": "2223", }, {"name": "其他", "value": "3", }, ],
-            },
-            {
-                "time": "周日",
-                "value_list": [{"name": "生活", "value": "10", }, {"name": "空调", "value": "23", },
-                               {"name": "厨房", "value": "20", }, {"name": "其他", "value": "23", }, ],
-            },
-
-        ],
+    # 初始化返回数据
+    data_energy_overview = {
+        "check_name": "{}用能情况".format(check_id),
+        "electricity": [],
+        "gas": [],
+        "water": []
     }
-    return test_data
+
+    # 用电情况查询
+    if check_id == "":
+        # 默认值，取总体数据
+        sql_e = """
+                SELECT DATE_FORMAT(ctime,'%%Y%%m%%d%%w') cut_time, 
+                sum(CASE value_type WHEN 'building' THEN value ELSE 0 END) as '建筑',
+                sum(CASE value_type WHEN 'ac' THEN value ELSE 0 END) as '空调',
+                sum(CASE value_type WHEN 'device' THEN value ELSE 0 END) as '电器',
+                sum(CASE value_type WHEN 'other' THEN value ELSE 0 END) as '其他'
+                FROM yf_bim_db.yf_bim_energy_electricity
+                where ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(stime=start_time, etime=end_time)
+
+    else:
+        # 根据位置id取值
+        sql_e = """
+                SELECT DATE_FORMAT(ctime,'%%Y%%m%%d%%w') cut_time, 
+                sum(CASE value_type WHEN 'building' THEN value ELSE 0 END) as '建筑',
+                sum(CASE value_type WHEN 'ac' THEN value ELSE 0 END) as '空调',
+                sum(CASE value_type WHEN 'device' THEN value ELSE 0 END) as '电器',
+                sum(CASE value_type WHEN 'other' THEN value ELSE 0 END) as '其他'
+                FROM yf_bim_db.yf_bim_energy_electricity
+                where position_id like '%%{pid}%%' and ctime between '{stime}' and '{etime}'
+                group by cut_time;
+                """.format(pid=check_id, stime=start_time, etime=end_time)
+
+    row_e = data_conn.query_all(sql_e)
+    print(row_e)
+
+    # 电能赋值
+    for row in row_e:
+        data_energy_overview["electricity"].append({
+                "time":WEEK_NAMES[int(row[0][-1])],
+                "value_list":[{"name":"建筑", "value": str(row[1]),},
+                              {"name":"空调", "value": str(row[2]),},
+                              {"name":"电器", "value": str(row[3]),},
+                              {"name":"其他", "value": str(row[4]),},],
+            })
+
+    # 用气情况查询
+    sql_g = """
+                    SELECT DATE_FORMAT(value_date,'%%Y%%m%%d%%w') cut_time, 
+                    sum(CASE value_type WHEN 'boiler' THEN value ELSE 0 END) as '采暖',
+                    sum(CASE value_type WHEN 'kitchen' THEN value ELSE 0 END) as '厨房',
+                    sum(CASE value_type WHEN 'other' THEN value ELSE 0 END) as '其他'
+                    FROM yf_bim_db.yf_bim_energy_gas
+                    where ctime between '{stime}' and '{etime}'
+                    group by cut_time;
+                    """.format(stime=start_time, etime=end_time)
+
+    row_g = data_conn.query_all(sql_g)
+    print(row_g)
+    # 用气赋值
+    for row in row_g:
+        data_energy_overview["gas"].append({
+            "time": WEEK_NAMES[int(row[0][-1])],
+            "value_list": [{"name": "采暖", "value": str(row[1]), },
+                           {"name": "厨房", "value": str(row[2]), },
+                           {"name": "其他", "value": str(row[3]), }, ],
+        })
+
+    # 用水情况查询
+    sql_w = """
+            SELECT DATE_FORMAT(value_date,'%%Y%%m%%d%%w') cut_time, 
+            sum(CASE value_type WHEN 'live' THEN value ELSE 0 END) as '生活',
+            sum(CASE value_type WHEN 'ac' THEN value ELSE 0 END) as '空调',
+            sum(CASE value_type WHEN 'kitchen' THEN value ELSE 0 END) as '厨房',
+            sum(CASE value_type WHEN 'other' THEN value ELSE 0 END) as '其他'
+            FROM yf_bim_db.yf_bim_energy_water
+            where ctime between '{stime}' and '{etime}'
+            group by cut_time;
+            """.format(stime=start_time, etime=end_time)
+
+    row_w = data_conn.query_all(sql_w)
+    print("row_w", row_w)
+    # 用气赋值
+    for row in row_w:
+        data_energy_overview["water"].append({
+            "time": WEEK_NAMES[int(row[0][-1])],
+            "value_list": [{"name": "生活", "value": str(row[1]), },
+                           {"name": "空调", "value": str(row[2]), },
+                           {"name": "厨房", "value": str(row[3]), },
+                           {"name": "其他", "value": str(row[4]), }, ],
+        })
+
+    # print(data_energy_overview)
+    # exit()
+    return data_energy_overview
 
 
 def get_energy_electricity_overview(check_id):
@@ -485,10 +602,37 @@ def get_energy_electricity_overview(check_id):
     用电情况通用查询接口1，使用唯一id进行查询，园区用电、建筑用电返回各建筑、各层用电占比
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-    # # 测试数据
+    data_conn = mysql_utils.Database()
+
+    # 初始化返回数据
+    data_energy_electricity_overview = {
+        "check_name": "{}用能情况".format(check_id),
+        "electricity": "",
+        "history_year_list": [],
+        "history_month_list": [],
+        "history_day_list": [],
+        "electricity_ratio1": [],
+        "electricity_ratio2": [],
+    }
+
+    if check_id == "":
+        # 默认值，取一层变配电室3三个表最后数值
+        sql_total_e = "select * from yf_bim_env_indoor where check_id = '' order by ctime desc limit 1"
+
+    else:
+        sql_total_e = "select * from yf_bim_env_indoor where check_id = '{pid}' order by ctime desc limit 1".format(pid=check_id + '_DN')
+    row1 = data_conn.query_one(sql_total_e)
+    print(row1)
+    # todo
+    sql_total_e = """
+        
+    """
+
+    print(data_energy_electricity_overview)
+
+    # 测试数据
     test_data = {
-        "check_name":"{}".format(check_name),
+        "check_name":"永丰B5综合服务楼{}".format(check_id),
         "electricity":"178",
         "history_year_list":[
             {"history_time": "1", "history_value":"326" },
@@ -577,6 +721,7 @@ def get_energy_electricity_overview(check_id):
         ]
     }
     return test_data
+    # return data_energy_electricity_overview
 
 
 def get_energy_electricity(check_id):
@@ -584,10 +729,9 @@ def get_energy_electricity(check_id):
     用电情况通用查询接口2，使用唯一id 查询设备用电（空调、电器）
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
     # # 测试数据
     test_data = {
-        "check_name":"设备用电 {}".format(check_name),
+        "check_name":"设备用电 {}".format(check_id),
         "electricity":"178",
         "history_year_list":[
             {"history_time": "1", "history_value":"326" },
@@ -669,11 +813,9 @@ def get_energy_gas(check_id):
     查询用气情况
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     test_data = {
-        "check_name":"设备用气 {}".format(check_name),
+        "check_name":"设备用气 {}".format(check_id),
         "ac_gas": {
             "class_name": "采暖用气",
             "history_year_list":[
@@ -832,11 +974,9 @@ def get_energy_water_overview(check_id):
     查询用气情况
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     test_data = {
-        "check_name":"{} 用水总览".format(check_name),
+        "check_name":"{} 用水总览".format(check_id),
         "live_water": {
             "class_name": "生活用水",
             "history_year_list":[
@@ -1081,11 +1221,9 @@ def get_energy_check_hot(check_id):
     用电情况通用查询接口2，使用唯一id 查询设备用电（空调、电器）
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     test_data = {
-        "check_name":"设备用热 {}".format(check_name),
+        "check_name":"设备用热 {}".format(check_id),
         "hot":"178",
         "history_year_list":[
             {"history_time": "1", "history_value":"326" },
@@ -1163,18 +1301,15 @@ def get_energy_check_hot(check_id):
     return test_data
 
 
-
 def get_device_ac_data(check_id):
     '''
     设备通用查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     if check_id[0] == 'a':
         test_data = {
-            "device_name":"空调-风机盘管，{}".format(check_name),
+            "device_name":"空调-风机盘管，{}".format(check_id),
             "device_pic":"ac_wind.jpg",
             "device_sn":"ABC123",
             "device_factory":"西门子",
@@ -1241,14 +1376,12 @@ def get_device_ea_data(check_id):
     设备通用查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     if check_id[0] == 'a':
         test_data = {
-            "device_name": "智能插座，{}".format(check_name),
+            "device_name": "智能插座，{}".format(check_id),
             "device_pic": "switch01.jpg",
-            "device_sn": "ABC123{}".format(check_name),
+            "device_sn": "ABC123{}".format(check_id),
             "device_factory": "小米",
             "device_version": "小米智能插座",
             "device_location": "1号楼2层控制室",
@@ -1271,9 +1404,9 @@ def get_device_ea_data(check_id):
         }
     else:
         test_data = {
-            "device_name": "其他电器，{}".format(check_name),
+            "device_name": "其他电器，{}".format(check_id),
             "device_pic": "ea01.jpg",
-            "device_sn": "ABC123{}".format(check_name),
+            "device_sn": "ABC123{}".format(check_id),
             "device_factory": "霍尼韦尔",
             "device_version": "",
             "device_location": "1号楼3层控制室",
@@ -1302,11 +1435,9 @@ def get_security_camera_data(check_id):
     安防摄像头设备查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     test_data = {
-        "device_name":"安防摄像头1，{}".format(check_name),
+        "device_name":"安防摄像头1，{}".format(check_id),
         "device_pic":"cam01.jpg",
         "device_sn":"ABC123",
         "device_factory":"西门子",
@@ -1333,10 +1464,9 @@ def get_security_device_data(check_id):
     安防设备查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
     # # 测试数据
     test_data = {
-        "device_name":"红外报警器{}".format(check_name),
+        "device_name":"红外报警器{}".format(check_id),
         "device_pic":"Infrared_alarm01.jpg",
         "device_sn":"ABC123",
         "device_factory":"西门子",
@@ -1357,11 +1487,9 @@ def get_fire_equipment_data(check_id):
     消防设备查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
-
     # # 测试数据
     test_data = {
-        "device_name":"消防报警器 {}".format(check_name),
+        "device_name":"消防报警器 {}".format(check_id),
         "device_pic":"fire_alarm01.jpg",
         "device_sn":"ABC123",
         "device_factory":"西门子",
@@ -1379,6 +1507,7 @@ def get_fire_equipment_data(check_id):
 
 def update_user_data(user_data_dict):
     '''
+
     :param user_data_dict:
     :return:
     '''
@@ -1393,6 +1522,7 @@ def update_user_data(user_data_dict):
 
 def update_area_data(data_dict):
     '''
+
     :param data_dict:
     :return:
     '''
@@ -1410,6 +1540,7 @@ def update_area_data(data_dict):
 
 def update_building_data(data_dict):
     '''
+
     :param data_dict:
     :return:
     '''
@@ -1427,6 +1558,7 @@ def update_building_data(data_dict):
 
 def update_room_data(data_dict):
     '''
+
     :param data_dict:
     :return:
     '''
@@ -1439,6 +1571,7 @@ def update_room_data(data_dict):
 
 def update_property_data(data_dict):
     '''
+
     :param data_dict:
     :return:
     '''
@@ -1451,3 +1584,22 @@ def update_property_data(data_dict):
         "value2": data_dict.get('value4'),
     }
     return test_data
+
+if __name__ == '__main__':
+    print('---', get_name_by_id('room_a2f228'))
+    exit()
+    # print(get_area_overview())
+    # print(get_building_overview())
+    # print(get_env_outdoor())
+    # print(env_outdoor_history('year'))
+    # print(env_outdoor_history('month'))
+    # print(env_outdoor_history('day'))
+    # print(get_env_indoor('K1_102_5L_ZZQa'))
+    # print(env_indoor_history('111','month'))
+    # print(env_indoor_history('K1_102_5L_ZZQ','month'))
+    # print(env_indoor_history('K1_102_5L_ZZQ','day'))
+    # print(env_indoor_history('11','day'))
+    # print(get_energy_overview('b01f03'))
+    print(get_energy_electricity_overview('b01f03'))
+
+
