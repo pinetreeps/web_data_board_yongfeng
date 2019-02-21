@@ -21,7 +21,7 @@ def get_name_by_id(check_id):
     data_conn = mysql_utils.Database()
     sql1 = "select position_name from yf_bim_position_info where position_id = '{pid}'".format(pid=check_id)
     row1 = data_conn.query_one(sql1)
-    # print(row1)
+    print(row1)
     if row1 == None:
         row1 = ''
     else:
@@ -232,9 +232,11 @@ def get_env_indoor(position_id):
     查询室内环境 实时
     :return: dict
     '''
+    position_name = get_name_by_id(position_id)
+
     # # 测试数据
     test_data = {
-        "position_name":"1号楼{}位置".format(get_name_by_id(position_id)),
+        "position_name":"1号楼{}位置".format(get_name_by_id(position_name)),
         "temperature":"26",
         "humidity":"40",
         "voc":"0",
@@ -1451,3 +1453,6 @@ def update_property_data(data_dict):
         "value2": data_dict.get('value4'),
     }
     return test_data
+
+if __name__ == '__main__':
+    print('---', get_name_by_id('room_a2f228'))
