@@ -7,7 +7,6 @@
 三、信息接口
 '''
 
-import datetime
 from utils import mysql_utils
 
 WEEK_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
@@ -18,15 +17,14 @@ def get_name_by_id(check_id):
     get name by check_id
     :return: name
     '''
+    check_name = ''
     data_conn = mysql_utils.Database()
     sql1 = "select position_name from yf_bim_position_info where position_id = '{pid}'".format(pid=check_id)
     row1 = data_conn.query_one(sql1)
-    print(row1)
-    if row1 == None:
-        row1 = ''
-    else:
-        row1 = row1[0]
-    return row1
+    print('--row1---',row1)
+    if row1 != None:
+        check_name = row1[0]
+    return check_name
 
 # --------------1、项目概况模块 ------------------
 
