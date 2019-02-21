@@ -234,7 +234,7 @@ def get_env_indoor(position_id):
 
     # # 测试数据
     test_data = {
-        "position_name":"1号楼{}位置".format(get_name_by_id(position_name)),
+        "position_name":"1号楼{}位置".format(position_name),
         "temperature":"26",
         "humidity":"40",
         "voc":"0",
