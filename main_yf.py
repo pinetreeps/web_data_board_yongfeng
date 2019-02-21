@@ -4,6 +4,7 @@
 # python 3.6
 # Date: 2018/11/05
 
+import sys
 try:
     reload(sys)  # Python2.5 初始化后删除了 sys.setdefaultencoding 方法，我们需要重新载入
     sys.setdefaultencoding('utf-8')
