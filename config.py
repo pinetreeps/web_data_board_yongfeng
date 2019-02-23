@@ -10,7 +10,13 @@
 IS_LOCAL = False
 
 # --------------文件目录  --------------
-# file_dir = "/Users/pinetree_mac/ps_use/py_works/document_tools/app/"
+# 阿里云服务器
+WORK_PATH = "/root/data1/web_data_board_yongfeng/"
+# 本机
+# WORK_PATH = "/Users/pinetree_mac/ps_use/py_works/web_data_board_yongfeng/"
+
+# --------------日志文件配置--------------
+LOGGING_FILE = WORK_PATH + "log/main.log"
 
 # --------------mysql数据库配置--------------
 

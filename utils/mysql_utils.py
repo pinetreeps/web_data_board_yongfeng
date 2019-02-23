@@ -8,11 +8,7 @@ import os
 import pymysql
 # import ConfigParser
 import config
-import sys
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
 
-#
 # cf = ConfigParser.ConfigParser()
 # filename = 'config.ini'
 # curr_dir = os.path.dirname(os.path.abspath(__file__))

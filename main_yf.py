@@ -28,6 +28,23 @@ bootstrap = Bootstrap(app)
 # 解决跨域问题
 CORS(app, supports_credentials=True)
 
+import logging
+# -----------日志配置------------
+# 格式化日志配置，输出日志到文件
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger("main")
+hdr = logging.FileHandler(config.LOGGING_FILE)
+
+# 日志格式
+formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(name)s %(funcName)s: %(message)s','%Y-%m-%d %H:%M:%S')
+hdr.setFormatter(formatter)
+logger.addHandler(hdr)
+
+# 输出到终端
+hdr_s = logging.StreamHandler()
+hdr_s.setFormatter(formatter)
+logger.addHandler(hdr_s)
+
 
 # -------------------------测试接口----------------------------
 @app.route('/')
