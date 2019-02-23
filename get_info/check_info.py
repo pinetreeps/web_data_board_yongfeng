@@ -119,10 +119,9 @@ def env_outdoor_history(data_type):
         :return: dict
         '''
     # # 测试数据
-    test_data_env_outdoor_history = {}
+    test_data_env_outdoor_history = { "data_list":[]}
     if 'year' == data_type:
-        test_data_env_outdoor_history = {
-            "data_list":[
+        test_data_env_outdoor_history["data_list"] = [
             {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
             {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "40", "wind_speed": "1.2", "precipitation": "20", "air_pressure": "102.3",   "pm2.5": "120"},
             {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "40", "wind_speed": "1.2", "precipitation": "100", "air_pressure": "102.3",   "pm2.5": "120"},
@@ -136,96 +135,33 @@ def env_outdoor_history(data_type):
             {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "500"},
             {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3",   "pm2.5": "420"},
             ]
-        }
     elif 'month' == data_type:
-        test_data_env_outdoor_history = {
-            "data_list": [
-                {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "24", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "25", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "26", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "27", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "28", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "29", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "30", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-            ]
-        }
+        for i in range(1, 31):
+            row_data = {
+                "data_time": str(i),
+                "temperature_high": str(random.randint(1, 10)),
+                "temperature_low": str(random.randint(-10, 3)),
+                "humidity": str(random.randint(10, 35)),
+                "wind_speed": str(random.randint(0, 3)) + '.' + str(random.randint(0, 10)),
+                "precipitation": str(random.randint(0, 200)),
+                "air_pressure": str(random.randint(100, 105)),
+                "pm2.5": str(random.randint(80, 500))
+            }
+            test_data_env_outdoor_history["data_list"].append(row_data)
 
     elif 'day' == data_type:
-        test_data_env_outdoor_history = {
-            "data_list": [
-                {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-                {"data_time": "0", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-                 "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3",   "pm2.5": "320"},
-            ]
-        }
+        for i in range(0, 24):
+            row_data = {
+                "data_time": str(i),
+                "temperature_high": str(random.randint(1, 10)),
+                "temperature_low": str(random.randint(-10, 3)),
+                "humidity": str(random.randint(10, 35)),
+                "wind_speed": str(random.randint(0, 3)) + '.' + str(random.randint(0, 10)),
+                "precipitation": str(random.randint(0, 200)),
+                "air_pressure": str(random.randint(100, 105)),
+                "pm2.5": str(random.randint(80, 500))
+            }
+            test_data_env_outdoor_history["data_list"].append(row_data)
     return test_data_env_outdoor_history
 
 def get_env_indoor(position_id):
@@ -258,59 +194,21 @@ def env_indoor_history(position_id, data_type):
         "data_list": []
     }
     if 'year' == data_type:
-        test_data_env_indoor_history = {
-            "position_name": "{}".format(position_name),
-            "data_list":[
-            {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-            {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "40", "wind_speed": "1.2", "precipitation": "20", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "40", "wind_speed": "1.2", "precipitation": "100", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "4", "temperature_high":"20", "temperature_low":"1", "humidity": "40", "wind_speed": "1.2", "precipitation": "200", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "5", "temperature_high":"26", "temperature_low":"16", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "6", "temperature_high":"28", "temperature_low":"18", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "7", "temperature_high":"30", "temperature_low":"22", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "8", "temperature_high":"35", "temperature_low":"22", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "9", "temperature_high":"34", "temperature_low":"18", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "10", "temperature_high":"26", "temperature_low":"16", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "120"},
-            {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "500"},
-            {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "40", "wind_speed": "1.2", "precipitation": "300", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "420"},
+        test_data_env_indoor_history["data_list"] = [
+            {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "10", "voc":"0", "pm2.5": "320"},
+            {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "14",  "voc":"0", "pm2.5": "120"},
+            {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "15",  "voc":"0", "pm2.5": "120"},
+            {"data_time": "4", "temperature_high":"20", "temperature_low":"1", "humidity": "21",  "voc":"0", "pm2.5": "120"},
+            {"data_time": "5", "temperature_high":"26", "temperature_low":"16", "humidity": "30", "voc":"0", "pm2.5": "120"},
+            {"data_time": "6", "temperature_high":"28", "temperature_low":"18", "humidity": "34", "voc":"0", "pm2.5": "120"},
+            {"data_time": "7", "temperature_high":"30", "temperature_low":"22", "humidity": "45", "voc":"0", "pm2.5": "120"},
+            {"data_time": "8", "temperature_high":"35", "temperature_low":"22", "humidity": "35", "voc":"0", "pm2.5": "120"},
+            {"data_time": "9", "temperature_high":"34", "temperature_low":"18", "humidity": "41", "voc":"0", "pm2.5": "120"},
+            {"data_time": "10", "temperature_high":"26", "temperature_low":"16", "humidity": "22", "voc":"0", "pm2.5": "120"},
+            {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "19", "voc":"0", "pm2.5": "500"},
+            {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "20", "voc":"0", "pm2.5": "420"},
             ]
-        }
     elif 'month' == data_type:
-        # test_data_env_indoor_history = {
-        #     "position_name": "{}".format(position_name),
-        #     "data_list": [
-        #         {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "24", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "25", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "26", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "27", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "28", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "29", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "30", "temperature_high": "5", "temperature_low": "-10", "humidity": "40", "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #     ]
-        # }
         for i in range(1, 31):
             row_data = {
                 "data_time": str(i),
@@ -323,59 +221,6 @@ def env_indoor_history(position_id, data_type):
             test_data_env_indoor_history["data_list"].append(row_data)
 
     elif 'day' == data_type:
-        # test_data_env_indoor_history = {
-        #     "position_name": "{}".format(position_name),
-        #     "data_list": [
-        #         {"data_time": "1", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "2", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "3", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "4", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "5", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "6", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "7", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "8", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "9", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "10", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "11", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "12", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "13", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "14", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "15", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "16", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "17", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "18", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "19", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "20", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "21", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "22", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "23", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #         {"data_time": "0", "temperature_high": "5", "temperature_low": "-10", "humidity": "40",
-        #          "wind_speed": "1.2", "precipitation": "10", "air_pressure": "102.3", "voc":"2.7", "pm2.5": "320"},
-        #     ]
-        # }
         for i in range(0, 24):
             row_data = {
                 "data_time": str(i),
