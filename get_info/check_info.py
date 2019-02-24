@@ -34,14 +34,22 @@ def get_device_name_by_id(check_id):
     get name by check_id
     :return: name
     '''
-    check_name = ''
+    device_info = {
+        "device_name":"",
+        "device_code":"",
+        "device_type":"",
+        "device_position_id":""
+    }
     data_conn = mysql_utils.Database()
     sql1 = "select device_name, device_code, device_type, device_position_id from yf_bim_device_info where device_id = '{did}'".format(did=check_id)
     row1 = data_conn.query_one(sql1)
     logger.debug(row1)
     if row1 != None:
-        check_name = row1[0]
-    return check_name
+        device_info["device_name"] = row1[0]
+        device_info["device_code"] = row1[1]
+        device_info["device_type"] = row1[2]
+        device_info["device_position_id"] = row1[3]
+    return device_info
 
 
 # --------------1、项目概况模块 ------------------
@@ -1286,69 +1294,254 @@ def get_device_ac_data(check_id):
     设备通用查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_device_name_by_id(check_id)
+    device_info = get_device_name_by_id(check_id)
 
     # # 测试数据
-    if check_id[0] == 'a':
+    if device_info.get("device_code") == 'FP03':
         test_data = {
-            "device_name":"空调-风机盘管，{}".format(check_name),
-            "device_pic":"ac_wind.jpg",
-            "device_sn":"ABC123",
-            "device_factory":"西门子",
-            "device_version":"cv100",
-            "device_location":"1号楼1层",
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "FP03.jpg",
+            "device_sn": device_info.get("device_code") ,
+            "device_factory":"美的",
+            "device_version": device_info.get("device_code") ,
+            "device_location":"",
             "device_info":[
-                {
-                    "device_info_name":"风量",
-                    "device_info_value":"611m3",
-                }
+                {"device_info_name": "冷量kW", "device_info_value":"2.82" },
+                {"device_info_name": "热量kW", "device_info_value": "4.4" },
+                {"device_info_name": "风量m3/h", "device_info_value": "550" },
+                {"device_info_name": "电机功率W", "device_info_value": "54" },
+                {"device_info_name": "出口静压Pa", "device_info_value": "30" },
             ],
             "device_status":[
-                {
-                    "device_status_name":"室内温度",
-                    "device_status_value":"23摄氏度",
-                },
-                {
-                    "device_status_name":"冷水阀开关状态",
-                    "device_status_value":"on",
-                },
-                {
-                    "device_status_name":"报警信息",
-                    "device_status_value":"无故障",
-                }
+                {"device_status_name":"开关", "device_status_value":"关机"},
+                {"device_status_name":"控制模式", "device_status_value":"自动模式"},
+                {"device_status_name":"过滤器使用时长设置", "device_status_value":"0-4320小时"},
+                {"device_status_name":"PM2.5浓度设置", "device_status_value":"0-200"},
+                {"device_status_name":"季度设置", "device_status_value":"冬季"},
+                {"device_status_name":"夏季温度最小值设置", "device_status_value":"15"},
+                {"device_status_name":"冬季温度最大值设置", "device_status_value":"28"},
+                {"device_status_name":"PM2.5阈值设置", "device_status_value":"0-24"},
+                {"device_status_name":"温度阈值设置", "device_status_value":"0.5"},
+                {"device_status_name":"控制器LCD亮度值设置", "device_status_value":"20%"},
+                {"device_status_name":"过滤器运行时间", "device_status_value": str(random.randint(0, 10))},
+                {"device_status_name":"运行风速", "device_status_value":"低速"},
+                {"device_status_name":"电磁阀运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"水离子运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"过滤器运行状态", "device_status_value":"关闭"},
+            ]
+        }
+    elif device_info.get("device_code") == 'FP04':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "FP04.jpg",
+            "device_sn": device_info.get("device_code") ,
+            "device_factory":"美的",
+            "device_version": device_info.get("device_code") ,
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "冷量kW", "device_info_value": "3.74"},
+                {"device_info_name": "热量kW", "device_info_value": "6.26"},
+                {"device_info_name": "风量m3/h", "device_info_value": "750"},
+                {"device_info_name": "电机功率W", "device_info_value": "72"},
+                {"device_info_name": "出口静压Pa", "device_info_value": "30"},
+            ],
+            "device_status":[
+                {"device_status_name":"开关", "device_status_value":"关机"},
+                {"device_status_name":"控制模式", "device_status_value":"自动模式"},
+                {"device_status_name":"过滤器使用时长设置", "device_status_value":"0-4320小时"},
+                {"device_status_name":"PM2.5浓度设置", "device_status_value":"0-200"},
+                {"device_status_name":"季度设置", "device_status_value":"冬季"},
+                {"device_status_name":"夏季温度最小值设置", "device_status_value":"15"},
+                {"device_status_name":"冬季温度最大值设置", "device_status_value":"28"},
+                {"device_status_name":"PM2.5阈值设置", "device_status_value":"0-24"},
+                {"device_status_name":"温度阈值设置", "device_status_value":"0.5"},
+                {"device_status_name":"控制器LCD亮度值设置", "device_status_value":"20%"},
+                {"device_status_name":"过滤器运行时间", "device_status_value": str(random.randint(0, 10))},
+                {"device_status_name":"运行风速", "device_status_value":"低速"},
+                {"device_status_name":"电磁阀运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"水离子运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"过滤器运行状态", "device_status_value":"关闭"},
+            ]
+        }
+    elif device_info.get("device_code") == 'FP05':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "FP05.jpg",
+            "device_sn": device_info.get("device_code") ,
+            "device_factory":"美的",
+            "device_version": device_info.get("device_code") ,
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "冷量kW", "device_info_value": "5.23"},
+                {"device_info_name": "热量kW", "device_info_value": "8.4"},
+                {"device_info_name": "风量m3/h", "device_info_value": "1060"},
+                {"device_info_name": "电机功率W", "device_info_value": "112"},
+                {"device_info_name": "出口静压Pa", "device_info_value": "30"},
+            ],
+            "device_status":[
+                {"device_status_name":"开关", "device_status_value":"关机"},
+                {"device_status_name":"控制模式", "device_status_value":"自动模式"},
+                {"device_status_name":"过滤器使用时长设置", "device_status_value":"0-4320小时"},
+                {"device_status_name":"PM2.5浓度设置", "device_status_value":"0-200"},
+                {"device_status_name":"季度设置", "device_status_value":"冬季"},
+                {"device_status_name":"夏季温度最小值设置", "device_status_value":"15"},
+                {"device_status_name":"冬季温度最大值设置", "device_status_value":"28"},
+                {"device_status_name":"PM2.5阈值设置", "device_status_value":"0-24"},
+                {"device_status_name":"温度阈值设置", "device_status_value":"0.5"},
+                {"device_status_name":"控制器LCD亮度值设置", "device_status_value":"20%"},
+                {"device_status_name":"过滤器运行时间", "device_status_value": str(random.randint(0, 10))},
+                {"device_status_name":"运行风速", "device_status_value":"低速"},
+                {"device_status_name":"电磁阀运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"水离子运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"过滤器运行状态", "device_status_value":"关闭"},
+            ]
+        }
+    elif device_info.get("device_code") == 'FP06' or device_info.get("device_code") == 'FP08':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "FP06.jpg",
+            "device_sn": device_info.get("device_code") ,
+            "device_factory":"美的",
+            "device_version": device_info.get("device_code") ,
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "冷量kW", "device_info_value": "7.3"},
+                {"device_info_name": "热量kW", "device_info_value": "8.4"},
+                {"device_info_name": "风量m3/h", "device_info_value": "1060"},
+                {"device_info_name": "电机功率W", "device_info_value": "112"},
+                {"device_info_name": "出口静压Pa", "device_info_value": "30"},
+            ],
+            "device_status":[
+                {"device_status_name":"开关", "device_status_value":"关机"},
+                {"device_status_name":"控制模式", "device_status_value":"自动模式"},
+                {"device_status_name":"过滤器使用时长设置", "device_status_value":"0-4320小时"},
+                {"device_status_name":"PM2.5浓度设置", "device_status_value":"0-200"},
+                {"device_status_name":"季度设置", "device_status_value":"冬季"},
+                {"device_status_name":"夏季温度最小值设置", "device_status_value":"15"},
+                {"device_status_name":"冬季温度最大值设置", "device_status_value":"28"},
+                {"device_status_name":"PM2.5阈值设置", "device_status_value":"0-24"},
+                {"device_status_name":"温度阈值设置", "device_status_value":"0.5"},
+                {"device_status_name":"控制器LCD亮度值设置", "device_status_value":"20%"},
+                {"device_status_name":"过滤器运行时间", "device_status_value": str(random.randint(0, 10))},
+                {"device_status_name":"运行风速", "device_status_value":"低速"},
+                {"device_status_name":"电磁阀运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"水离子运行状态", "device_status_value":"关闭"},
+                {"device_status_name":"过滤器运行状态", "device_status_value":"关闭"},
+            ]
+        }
+    elif device_info.get("device_code") == 'OA01':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "OA01.jpg",
+            "device_sn": "AHU" ,
+            "device_factory":"美的",
+            "device_version": "AHU" ,
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "冷量kW", "device_info_value": "24"},
+                {"device_info_name": "热量kW", "device_info_value": "28"},
+                {"device_info_name": "风量m3/h", "device_info_value": "2000"},
+                {"device_info_name": "380V功率kW", "device_info_value": "0.55"},
+                {"device_info_name": "出口静压Pa", "device_info_value": "300"},
+            ],
+            "device_status":[
+                {"device_status_name":"命令控制/时间表模式设定", "device_status_value":"时间表控制"},
+                {"device_status_name":"命令控制模式", "device_status_value":"停止"},
+                {"device_status_name":"防冻开关状态", "device_status_value":"正常"},
+                {"device_status_name":"滤网压差状态", "device_status_value":"正常"},
+                {"device_status_name":"风机手/自动状态", "device_status_value":"自动"},
+                {"device_status_name":"风机运行状态", "device_status_value":"运行"},
+                {"device_status_name":"风机故障状态", "device_status_value":"正常"},
+                {"device_status_name":"风机启停控制显示", "device_status_value":"启动"},
+                {"device_status_name":"新风阀开关控制显示", "device_status_value":"开启"},
+                {"device_status_name":"净化器启停控制显示", "device_status_value":"开启"},
+                {"device_status_name":"送风温度传感器", "device_status_value": "24"},
+                {"device_status_name":"PM2.5传感器", "device_status_value":"10"},
+            ]
+        }
+    elif device_info.get("device_code") == 'OA02':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "OA01.jpg",
+            "device_sn": "AHU" ,
+            "device_factory":"美的",
+            "device_version": "AHU",
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "冷量kW", "device_info_value": "38"},
+                {"device_info_name": "热量kW", "device_info_value": "43"},
+                {"device_info_name": "风量m3/h", "device_info_value": "3000"},
+                {"device_info_name": "380V功率kW", "device_info_value": "0.75"},
+                {"device_info_name": "出口静压Pa", "device_info_value": "300"},
+            ],
+            "device_status":[
+                {"device_status_name":"命令控制/时间表模式设定", "device_status_value":"时间表控制"},
+                {"device_status_name":"命令控制模式", "device_status_value":"停止"},
+                {"device_status_name":"防冻开关状态", "device_status_value":"正常"},
+                {"device_status_name":"滤网压差状态", "device_status_value":"正常"},
+                {"device_status_name":"风机手/自动状态", "device_status_value":"自动"},
+                {"device_status_name":"风机运行状态", "device_status_value":"运行"},
+                {"device_status_name":"风机故障状态", "device_status_value":"正常"},
+                {"device_status_name":"风机启停控制显示", "device_status_value":"启动"},
+                {"device_status_name":"新风阀开关控制显示", "device_status_value":"开启"},
+                {"device_status_name":"净化器启停控制显示", "device_status_value":"开启"},
+                {"device_status_name":"送风温度传感器", "device_status_value": "24"},
+                {"device_status_name":"PM2.5传感器", "device_status_value":"10"},
+            ]
+        }
+    elif device_info.get("device_code") == 'KT01':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "KT01.jpg",
+            "device_sn": "KT",
+            "device_factory":"美的",
+            "device_version": "KT",
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "冷量kW", "device_info_value": "65"},
+                {"device_info_name": "热量kW", "device_info_value": "70"},
+                {"device_info_name": "380V制冷输入功率kW", "device_info_value": "19.1"},
+                {"device_info_name": "380V风机输入功率kW", "device_info_value": "1.8"},
+                {"device_info_name": "冷媒", "device_info_value": "R410A"},
+                {"device_info_name": "机组运行重量kg", "device_info_value": "640"},
+                {"device_info_name": "噪音dB（A）", "device_info_value": "67"},
+            ],
+            "device_status":[
+                {"device_status_name": "开关", "device_status_value": "关机"},
+            ]
+        }
+    elif device_info.get("device_code") == 'BL01':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic": "BL01.jpg",
+            "device_sn": "BL01",
+            "device_factory":"",
+            "device_version": "BL",
+            "device_location":"",
+            "device_info":[
+                {"device_info_name": "扬程m", "device_info_value": "28"},
+                {"device_info_name": "流量m3/h", "device_info_value": "80"},
+                {"device_info_name": "功率kW", "device_info_value": "11"},
+                {"device_info_name": "效率%", "device_info_value": "70"},
+                {"device_info_name": "运行重量kg", "device_info_value": "200"},
+            ],
+            "device_status":[
+                {"device_status_name": "开关", "device_status_value": "关机"},
             ]
         }
     else:
         test_data = {
-            "device_name":"空调-水泵，{}".format(check_id),
-            "device_pic":"ac_water_pump.jpg",
-            "device_sn":"ABC123",
-            "device_factory":"西门子",
-            "device_version":"cv100",
-            "device_location":"1号楼2层",
+            "device_name":"未选择设备",
+            "device_pic":"unknow.jpg",
+            "device_sn":"",
+            "device_factory":"",
+            "device_version":"",
+            "device_location":"",
             "device_info":[
-                {
-                    "device_info_name":"扬程",
-                    "device_info_value":"126m",
-                },
-                {
-                    "device_info_name":"流量",
-                    "device_info_value":"216m3",
-                },
-                {
-                    "device_info_name":"功率",
-                    "device_info_value":"3000w",
-                }
+                {"device_info_name":"", "device_info_value":"" },
             ],
             "device_status":[
-                {
-                    "device_status_name":"开关状态",
-                    "device_status_value":"on",
-                },
-                {
-                    "device_status_name":"报警信息",
-                    "device_status_value":"无故障",
-                }
+                {"device_status_name":"", "device_status_value":"" },
             ]
         }
     return test_data
@@ -1358,56 +1551,47 @@ def get_device_ea_data(check_id):
     设备通用查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
+    device_info = get_device_name_by_id(check_id)
 
     # # 测试数据
-    if check_id[0] == 'a':
+    if device_info.get("device_code") == 'socket':
         test_data = {
-            "device_name": "智能插座，{}".format(check_name),
-            "device_pic": "switch01.jpg",
-            "device_sn": "ABC123{}".format(check_name),
-            "device_factory": "小米",
-            "device_version": "小米智能插座",
-            "device_location": "1号楼2层控制室",
+            "device_name": "{}".format(device_info.get("device_name")),
+            "device_pic": "PD.jpg",
+            "device_sn": "",
+            "device_factory": "",
+            "device_version": "",
+            "device_location": "",
             "device_info": [
                 {
                     "device_info_name": "插座类型",
-                    "device_info_value": "5孔",
+                    "device_info_value": "3孔",
                 },
             ],
             "device_status": [
-                {
-                    "device_status_name": "开关状态",
-                    "device_status_value": "on",
-                },
-                {
-                    "device_status_name": "实时电流",
-                    "device_status_value": "20mA",
-                }
+                {"device_status_name": "当前电能", "device_status_value": "0" },
+                {"device_status_name": "信号强度", "device_status_value": "高" },
+                {"device_status_name": "定时通断电开关", "device_status_value": "停用" },
             ]
         }
     else:
         test_data = {
-            "device_name": "其他电器，{}".format(check_name),
-            "device_pic": "ea01.jpg",
-            "device_sn": "ABC123{}".format(check_name),
-            "device_factory": "霍尼韦尔",
+            "device_name": "未选择设备",
+            "device_pic": "unknow.jpg",
+            "device_sn": "",
+            "device_factory": "",
             "device_version": "",
-            "device_location": "1号楼3层控制室",
+            "device_location": "",
             "device_info": [
                 {
-                    "device_info_name": "类型1",
-                    "device_info_value": "设备1",
-                },
-                {
-                    "device_info_name": "类型2",
-                    "device_info_value": "设备2",
+                    "device_info_name": "",
+                    "device_info_value": "",
                 },
             ],
             "device_status": [
                 {
-                    "device_status_name": "开关状态",
-                    "device_status_value": "on",
+                    "device_status_name": "",
+                    "device_status_value": "",
                 },
             ]
         }
