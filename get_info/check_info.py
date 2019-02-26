@@ -1631,7 +1631,6 @@ def get_security_camera_data(check_id):
     else:
         test_data = {
             "device_name": "未选择设备",
-            # "device_pic": "unknow.jpg",
             "device_pic": "cam.jpg",
             "device_sn": "",
             "device_factory": "",
@@ -1640,7 +1639,7 @@ def get_security_camera_data(check_id):
             "device_status": [
                 {
                     "device_status_name": "摄像头状态",
-                    "device_status_value": "未知",
+                    "device_status_value": "",
                 }
             ],
             "camera_config": {
