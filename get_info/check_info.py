@@ -108,7 +108,7 @@ def get_building_overview():
     '''
     # # 测试数据
     test_data_building_overview = {
-        "building_name":"西北旺镇中午服务中心",
+        "building_name":"西北旺镇政务服务中心",
         "building_function":"综合服务楼",
         "building_area":"7643",
         "building_time":"2018",
@@ -1603,29 +1603,54 @@ def get_security_camera_data(check_id):
     安防摄像头设备查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
+    device_info = get_device_name_by_id(check_id)
 
     # # 测试数据
-    test_data = {
-        "device_name":"安防摄像头1，{}".format(check_name),
-        "device_pic":"cam01.jpg",
-        "device_sn":"ABC123",
-        "device_factory":"西门子",
-        "device_version":"cv100",
-        "device_location":"1号楼1层",
-        "device_status":[
-            {
-                "device_status_name":"摄像头状态",
-                "device_status_value":"on",
+    if device_info.get("device_code") == 'cam':
+        test_data = {
+            "device_name":"{}".format(device_info.get("device_name")),
+            "device_pic":"cam.jpg",
+            "device_sn":"cam",
+            "device_factory":"宇视",
+            "device_version":"cam",
+            "device_location":"",
+            "device_status":[
+                {
+                    "device_status_name":"摄像头状态",
+                    "device_status_value":"on",
+                }
+            ],
+            "camera_config":{
+                "server_ip":"207.101.67.182",
+                "user_name":"loadmin",
+                "password":"d6bf4bb9a66419380a",
+                "cam_code":"EC2004-139_1",
+                "video_img":"03out_N_E.gif",
             }
-        ],
-        "camera_config":{
-            "server_ip":"207.101.67.182",
-            "user_name":"loadmin",
-            "password":"d6bf4bb9a66419380a",
-            "cam_code":"EC2004-139_1",
         }
-    }
+    else:
+        test_data = {
+            "device_name": "未选择设备",
+            # "device_pic": "unknow.jpg",
+            "device_pic": "cam.jpg",
+            "device_sn": "",
+            "device_factory": "",
+            "device_version": "",
+            "device_location": "",
+            "device_status": [
+                {
+                    "device_status_name": "摄像头状态",
+                    "device_status_value": "未知",
+                }
+            ],
+            "camera_config": {
+                "server_ip": "207.101.67.182",
+                "user_name": "loadmin",
+                "password": "d6bf4bb9a66419380a",
+                "cam_code": "EC2004-139_1",
+                "video_img": "03out_N_E.gif",
+            }
+        }
     return test_data
 
 

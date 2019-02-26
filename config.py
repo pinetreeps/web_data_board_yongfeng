@@ -21,6 +21,8 @@ LOGGING_FILE = WORK_PATH + "log/main.log"
 # --------------mysql数据库配置--------------
 
 DB_USERNAME = 'root'
+# 永丰数据库密码
+# DB_PASSWORD = 'yongfeng2018'
 DB_PASSWORD = 'pangsongpangsong'
 DB_HOST = '127.0.0.1'
 DB_PORT = '3307'
