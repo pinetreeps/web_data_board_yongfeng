@@ -34,6 +34,7 @@ def get_device_name_by_id(check_id):
     get name by check_id
     :return: name
     '''
+    logger.debug(check_id)
     device_info = {
         "device_name":"",
         "device_code":"",
@@ -1603,6 +1604,7 @@ def get_security_camera_data(check_id):
     安防摄像头设备查询接口，使用唯一id 查询设备信息
     :return: dict
     '''
+
     device_info = get_device_name_by_id(check_id)
 
     # # 测试数据
@@ -1631,7 +1633,7 @@ def get_security_camera_data(check_id):
     else:
         test_data = {
             "device_name": "未选择设备",
-            "device_pic": "cam.jpg",
+            "device_pic": "unknow.jpg",
             "device_sn": "",
             "device_factory": "",
             "device_version": "",
