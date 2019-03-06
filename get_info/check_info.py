@@ -1554,7 +1554,7 @@ def get_device_ea_data(check_id):
     device_info = get_device_name_by_id(check_id)
 
     # # 测试数据
-    if device_info.get("device_code") == 'socket':
+    if device_info.get("device_type") == 'powerduct':
         test_data = {
             "device_name": "{}".format(device_info.get("device_name")),
             "device_pic": "PD.jpg",
@@ -1606,10 +1606,10 @@ def get_security_camera_data(check_id):
     device_info = get_device_name_by_id(check_id)
 
     # # 测试数据
-    if device_info.get("device_code") == 'cam':
+    if device_info.get("device_type") == 'cam':
         test_data = {
             "device_name":"{}".format(device_info.get("device_name")),
-            "device_pic":"cam.jpg",
+            "device_pic":"{}.jpg".format(device_info.get("device_code")),
             "device_sn":"cam",
             "device_factory":"宇视",
             "device_version":"cam",
@@ -1625,7 +1625,7 @@ def get_security_camera_data(check_id):
                 "user_name":"loadmin",
                 "password":"d6bf4bb9a66419380a",
                 "cam_code":"EC2004-139_1",
-                "video_img":"03out_N_E.gif",
+                "video_img":"{}.gif".format(device_info.get("device_position_id")),
             }
         }
     else:
@@ -1647,7 +1647,7 @@ def get_security_camera_data(check_id):
                 "user_name": "loadmin",
                 "password": "d6bf4bb9a66419380a",
                 "cam_code": "EC2004-139_1",
-                "video_img": "03out_N_E.gif",
+                "video_img": "unknow.gif",
             }
         }
     return test_data

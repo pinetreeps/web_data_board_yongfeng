@@ -55,11 +55,12 @@ def loader_position_info():
         data_conn.insert_del_update(sql)
 
 def loader_device_info():
-    # 数据表导入 房间、楼层、位置信息表
-    df = pd.read_excel('/Users/pinetree_mac/ps_use/start_up_business/web_data_board_yongfeng/模拟数据/数据显示对照表190224.xls',
-                       'Sheet3', header=None, names=['a', 'id', 'name', 'code'])
-    # print(df.head(5))
-    # print(df.iloc[656, :])
+    # 数据表导入 设备信息表
+    df = pd.read_excel('/Users/pinetree_mac/ps_use/start_up_business/web_data_board_yongfeng/文档/数据显示对照表190305.xlsx',
+                       '接口设备名称对照表', header=None, names=['a', 'id', 'name', 'code', 'zjcode'])
+    print(df.head(5))
+    print(len(df))
+    print(df.iloc[652:, :])
     # exit()
     print(df[pd.isnull(df['code'])==True])
     df['code'] = df['code'].fillna('unknow')
@@ -73,7 +74,7 @@ def loader_device_info():
     dpid = ''
     dtype = ''
 
-    for i in range(141, 657):
+    for i in range(511, 653):
 
         did = df['id'].values[i].split('_')
         dtype = did[0]
