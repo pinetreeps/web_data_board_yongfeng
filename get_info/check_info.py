@@ -1652,6 +1652,7 @@ def get_security_camera_data(check_id):
                 "video_img": "unknow.gif",
             }
         }
+    logger.debug(test_data)
     return test_data
 
 
