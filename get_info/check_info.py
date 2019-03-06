@@ -1632,8 +1632,8 @@ def get_security_camera_data(check_id):
         }
     else:
         test_data = {
-            "device_name": "未选择设备",
-            "device_pic": "unknow.jpg",
+            "device_name": "摄像头",
+            "device_pic": "CAM1.jpg",
             "device_sn": "",
             "device_factory": "",
             "device_version": "",
@@ -1649,7 +1649,7 @@ def get_security_camera_data(check_id):
                 "user_name": "loadmin",
                 "password": "d6bf4bb9a66419380a",
                 "cam_code": "EC2004-139_1",
-                "video_img": "unknow.gif",
+                "video_img": "a16.gif",
             }
         }
     logger.debug(test_data)
