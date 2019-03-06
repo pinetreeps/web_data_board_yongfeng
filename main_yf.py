@@ -61,6 +61,7 @@ def login():
     elif request.method == 'POST':
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uname' in data.keys() and 'password' in data.keys():
                 user = user_dal.UserDal().login_auth(data)
             else:
@@ -82,6 +83,7 @@ def logout():
     elif request.method == 'POST':
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'uname' in data.keys():
                 success = True
             else:
@@ -104,6 +106,7 @@ def register():
     elif request.method == 'POST':
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uname' in data.keys() and 'password' in data.keys() and 'nickname' in data.keys() \
                     and 'apply_code' in data.keys():
                 if data.get('apply_code') == config.APPLY_CODE:
@@ -129,6 +132,7 @@ def register_name_check():
     elif request.method == 'POST':
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uname' in data.keys():
                 success = user_dal.UserDal().register_name_check(data)
             else:
@@ -152,6 +156,7 @@ def area_overview():
     elif request.method == 'POST':
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys():
                 user = user_dal.UserDal().check_uid(data)
             else:
@@ -175,6 +180,7 @@ def building_overview():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'building_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -201,6 +207,7 @@ def env_outdoor():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -226,6 +233,7 @@ def env_outdoor_history():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'data_type' in data.keys() and data.get('data_type') in ("year", "month", "day"):
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -251,6 +259,7 @@ def env_indoor():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'position_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -276,6 +285,7 @@ def env_indoor_history():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'position_id' in data.keys() and 'data_type' in data.keys()  and data.get('data_type') in ("year", "month", "day"):
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -302,6 +312,7 @@ def energy_overview():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -328,6 +339,7 @@ def energy_electricity_overview():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -353,6 +365,7 @@ def energy_electricity():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -378,6 +391,7 @@ def energy_gas():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -403,6 +417,7 @@ def energy_water_overview():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -429,6 +444,7 @@ def energy_check_hot():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -457,6 +473,7 @@ def monitor_check_ac():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -484,6 +501,7 @@ def monitor_check_ea():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -511,6 +529,7 @@ def security_camera():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -538,6 +557,7 @@ def security_device():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -565,6 +585,7 @@ def fire_equipment():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -593,6 +614,7 @@ def config_user():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -619,6 +641,7 @@ def config_area():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -645,6 +668,7 @@ def config_building():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -671,6 +695,7 @@ def config_room():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
@@ -697,6 +722,7 @@ def config_property():
         # 参数校验
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
+            logger.debug(data)
             if 'uid' in data.keys() and 'check_id' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)

@@ -126,13 +126,13 @@ def get_env_outdoor():
     '''
     # # 测试数据
     test_data_env_outdoor = {
-        "temperature":"7",
-        "humidity":"31",
-        "wind_direction":"南",
-        "wind_speed":"1.2",
+        "temperature":"10",
+        "humidity":"52",
+        "wind_direction":"西",
+        "wind_speed":"1.0",
         "precipitation":"0",
         "air_pressure":"102.3",
-        "pm2.5":"120"
+        "pm2.5":"29"
     }
     return test_data_env_outdoor
 
