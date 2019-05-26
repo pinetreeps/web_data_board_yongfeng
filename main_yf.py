@@ -65,9 +65,9 @@ def login():
             if 'uname' in data.keys() and 'password' in data.keys():
                 user = user_dal.UserDal().login_auth(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         if user is not None:
             return post_json(0, 'success', user.to_dict())
         else:
@@ -87,9 +87,9 @@ def logout():
             if 'uid' in data.keys() and 'uname' in data.keys():
                 success = True
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         data = json.loads(request.get_data())
         if success:
             return post_json(0, 'success', data='用户登出成功')
@@ -136,9 +136,9 @@ def register_name_check():
             if 'uname' in data.keys():
                 success = user_dal.UserDal().register_name_check(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
 
         if success:
             return post_json(0, 'success', data='注册用户名不存在，可以注册')
@@ -160,9 +160,9 @@ def area_overview():
             if 'uid' in data.keys():
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         if user is not None:
             return post_json(0, 'success', check_info.get_area_overview())
         else:
@@ -185,9 +185,9 @@ def building_overview():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_building_overview())
@@ -212,9 +212,9 @@ def env_outdoor():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_env_outdoor())
@@ -238,9 +238,9 @@ def env_outdoor_history():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.env_outdoor_history(data.get('data_type')))
@@ -264,9 +264,9 @@ def env_indoor():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_env_indoor(data.get('position_id')))
@@ -290,9 +290,9 @@ def env_indoor_history():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.env_indoor_history(data.get('position_id'), data.get('data_type')))
@@ -317,9 +317,9 @@ def energy_overview():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_energy_overview(data.get('check_id')))
@@ -344,9 +344,9 @@ def energy_electricity_overview():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_energy_electricity_overview(data.get('check_id')))
@@ -370,9 +370,9 @@ def energy_electricity():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_energy_electricity(data.get('check_id')))
@@ -396,9 +396,9 @@ def energy_gas():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_energy_gas(data.get('check_id')))
@@ -422,9 +422,9 @@ def energy_water_overview():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_energy_water_overview(data.get('check_id')))
@@ -449,9 +449,9 @@ def energy_check_hot():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_energy_check_hot(data.get('check_id')))
@@ -478,9 +478,9 @@ def monitor_check_ac():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_device_ac_data(data.get('check_id')))
@@ -506,9 +506,9 @@ def monitor_check_ea():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_device_ea_data(data.get('check_id')))
@@ -534,9 +534,9 @@ def security_camera():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return 'json校验失败'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_security_camera_data(data.get('check_id')))
@@ -562,9 +562,9 @@ def security_device():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_security_device_data(data.get('check_id')))
@@ -590,9 +590,9 @@ def fire_equipment():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.get_fire_equipment_data(data.get('check_id')))
@@ -619,9 +619,9 @@ def config_user():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.update_user_data(data))
@@ -646,9 +646,9 @@ def config_area():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.update_area_data(data))
@@ -673,9 +673,9 @@ def config_building():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.update_building_data(data))
@@ -700,9 +700,9 @@ def config_room():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.update_room_data(data))
@@ -727,9 +727,9 @@ def config_property():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
-                return '输入参数不完整或者不正确'
+                return post_json(data='输入参数不完整或者不正确')
         else:
-            return '输入参数不完整或者不正确'
+            return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
             return post_json(0, 'success', check_info.update_property_data(data))
