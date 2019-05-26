@@ -252,7 +252,7 @@ def get_env_indoor(position_id):
         "voc": VOC_LEVEL.get(str(random.randint(0, 3))),
         "pm2.5": str(random.randint(5, 15))
     }
-
+    '''
     real_data = {
         "position_name":"{}".format(position_name),
         "temperature": get_data_sql_server('K2_121_4C2_205_SWD'),
@@ -260,6 +260,7 @@ def get_env_indoor(position_id):
         "voc": VOC_LEVEL.get(get_data_sql_server('K2_121_4C2_205_VOC')),
         "pm2.5": get_data_sql_server('K2_121_4C2_205_PMZ')
     }
+    '''
     return test_data
     # return real_data
 
