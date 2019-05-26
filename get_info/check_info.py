@@ -334,7 +334,7 @@ def env_indoor_history(position_id, data_type):
                 "temperature_high": str(random.randint(16, 24)),
                 "temperature_low": str(random.randint(10, 16)),
                 "humidity": str(random.randint(25, 35)),
-                "voc":VOC_LEVEL.get(str(random.randint(0, 3))),
+                "voc":[{"name":"良好", "value":"1"},{"name":"轻污染", "value":"0"},{"name":"中污染", "value":"0"},{"name":"重污染", "value":"0"}],
                 "pm2.5": str(random.randint(5, 15))
             }
             test_data_env_indoor_history["data_list"].append(row_data)
@@ -349,7 +349,7 @@ def env_indoor_history(position_id, data_type):
                 "temperature_high": str(random.randint(16, 24)),
                 "temperature_low": str(random.randint(10, 16)),
                 "humidity": str(random.randint(25, 35)),
-                "voc": VOC_LEVEL.get(str(random.randint(0, 3))),
+                "voc": [{"name":"良好", "value":"0"},{"name":"轻污染", "value":"1"},{"name":"中污染", "value":"0"},{"name":"重污染", "value":"0"}],
                 "pm2.5": str(random.randint(5, 15))
             }
 
