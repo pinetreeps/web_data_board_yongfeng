@@ -6,15 +6,19 @@
 '''
 sql server 连接工具
 '''
-import config
 import pymssql
+import logging
+
+import config
+
+logger = logging.getLogger("main")
 
 db_username = config.DB_SS_USERNAME
 db_password = config.DB_SS_PASSWORD
 db_host = config.DB_SS_HOST
 database = config.DB_SS_DATABASE
 port = config.DB_SS_PORT
-charset = config.DB_CHARSET
+charset = config.DB_SS_CHARSET
 
 '''
 import pymssql
@@ -45,7 +49,7 @@ class Database_sql_server:
 
             # self.connection = mysql.connector.connect(**config)
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
         self.cursor = self.db_connection.cursor()
         # self.cursor = self.connection.cursor(buffered=True, dictionary=True)
 
@@ -56,7 +60,7 @@ class Database_sql_server:
             self.db_connection.commit()
             return row_count
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
             self.db_connection.rollback()
 
     def insert_del_update_query_one(self, query1, query2, params1=(), params2=()):
@@ -65,7 +69,7 @@ class Database_sql_server:
             self.cursor.execute(query2, params2)
             self.db_connection.commit()
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
             self.db_connection.rollback()
         return self.cursor.fetchone()
 
@@ -73,17 +77,26 @@ class Database_sql_server:
         try:
             self.cursor.execute(query, params)
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
         return self.cursor.fetchone()
 
     def query_all(self, query, params=()):
         try:
             self.cursor.execute(query, params)
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
         return self.cursor.fetchall()
 
     def __del__(self):
         self.cursor.close()
         self.db_connection.close()
 
+if __name__ == '__main__':
+    sql_server_conn = Database_sql_server()
+    # 室外温度
+    check_id = 'QXZ_Temperature'
+
+    # UPDATETIME, TAGNAME, TAGVALUE
+    sql1 = "SELECT TOP 1 * FROM LASTDAVEDATA WHERE TAGNAME = '{name}' ORDER BY UPDATETIME DESC".format(name=check_id)
+    row1 = sql_server_conn.query_one(sql1)
+    print(row1)

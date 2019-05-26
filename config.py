@@ -40,7 +40,7 @@ DB_SS_USERNAME = 'sa'
 DB_SS_PASSWORD = 'qw@123'
 DB_SS_HOST = '192.168.1.54'
 DB_SS_PORT = '1433'
-DB_SS_DATABASE = ''
+DB_SS_DATABASE = 'RealInfo'
 DB_SS_CHARSET = 'utf8'
 
 # --------------用户注册邀请码--------------

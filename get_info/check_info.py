@@ -6,13 +6,17 @@
 '''
 三、信息接口
 '''
-import random
+import random, datetime
 import logging
 from utils import mysql_utils
+from utils import sqlserver_util
 
 logger = logging.getLogger("main")
 
 WEEK_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+# voc对照 0，1，2，3
+# VOC_LEVEL = {'0':'空气良好', '1':'轻度污染', '2':'中度污染', '3':'重度污染'}
+VOC_LEVEL = {'0':'良好', '1':'轻污染', '2':'中污染', '3':'重污染'}
 
 
 def get_name_by_id(check_id):
@@ -52,6 +56,19 @@ def get_device_name_by_id(check_id):
         device_info["device_position_id"] = row1[3]
     return device_info
 
+# --------------物联网取数据 ------------------
+def get_data_sql_server(check_id):
+    sql_server_conn = sqlserver_util.Database_sql_server()
+    # 室外温度
+    # check_id = 'QXZ_Temperature'
+    check_value = ''
+    sql1 = "SELECT TOP 1 * FROM LASTDAVEDATA WHERE TAGNAME = '{name}' ORDER BY UPDATETIME DESC".format(name=check_id)
+    row1 = sql_server_conn.query_one(sql1)
+    logger.debug(row1)
+    if row1 != None:
+        check_value = row1[2].strip()
+    return check_value
+
 
 # --------------1、项目概况模块 ------------------
 
@@ -82,11 +99,19 @@ def get_area_overview():
         "area_people_amount": "300",
         "companys_ratio": [
             {
-                "ratio_name": "事业单位",
-                "ratio_value": "1"
+                "ratio_name": "照明",
+                "ratio_value": "65"
             },
             {
-                "ratio_name": "其他单位",
+                "ratio_name": "空调",
+                "ratio_value": "5"
+            },
+            {
+                "ratio_name": "电器",
+                "ratio_value": "15"
+            },
+            {
+                "ratio_name": "其他",
                 "ratio_value": "0"
             }]
     }
@@ -173,6 +198,9 @@ def env_outdoor_history(data_type):
             test_data_env_outdoor_history["data_list"].append(row_data)
 
     elif 'day' == data_type:
+        # 获取当前小时数
+        time_hour = datetime.datetime.now().strftime('%H')
+
         # 模拟数据
         temperature_high_list = [-3,-3,-2,-1,-1,0,0,1,4,6,7,10,11,11,12,11,10,9,8,5,4,3,2,1]
         for i in range(0, 24):
@@ -186,13 +214,33 @@ def env_outdoor_history(data_type):
                 "air_pressure": str(random.randint(100, 105)),
                 "pm2.5": str(random.randint(80, 500))
             }
-            test_data_env_outdoor_history["data_list"].append(row_data)
+
+            row_data_zeros = {
+                "data_time": str(i),
+                "temperature_high": '',
+                "temperature_low": '',
+                "humidity": '',
+                "wind_speed": '',
+                "precipitation": '',
+                "air_pressure": '',
+                "pm2.5": ''
+            }
+            if i <= int(time_hour):
+                test_data_env_outdoor_history["data_list"].append(row_data)
+            else:
+                test_data_env_outdoor_history["data_list"].append(row_data_zeros)
     return test_data_env_outdoor_history
 
 def get_env_indoor(position_id):
     '''
     查询室内环境 实时
     :return: dict
+    '''
+    '''
+    温度	K2_121_4C2_205_SWD
+    湿度	K2_121_4C2_205_SSD
+    PM2.5 K2_121_4C2_205_PMZ
+    VOC	K2_121_4C2_205_VOC
     '''
     position_name = get_name_by_id(position_id)
 
@@ -201,10 +249,19 @@ def get_env_indoor(position_id):
         "position_name":"{}".format(position_name),
         "temperature": str(random.randint(22, 24)),
         "humidity": str(random.randint(30, 40)),
-        "voc": '0.0'+ str(random.randint(0, 9)),
+        "voc": VOC_LEVEL.get(str(random.randint(0, 3))),
         "pm2.5": str(random.randint(5, 15))
     }
+
+    real_data = {
+        "position_name":"{}".format(position_name),
+        "temperature": get_data_sql_server('K2_121_4C2_205_SWD'),
+        "humidity": get_data_sql_server('K2_121_4C2_205_SSD'),
+        "voc": VOC_LEVEL.get(get_data_sql_server('K2_121_4C2_205_VOC')),
+        "pm2.5": get_data_sql_server('K2_121_4C2_205_PMZ')
+    }
     return test_data
+    # return real_data
 
 
 def env_indoor_history(position_id, data_type):
@@ -220,18 +277,42 @@ def env_indoor_history(position_id, data_type):
     }
     if 'year' == data_type:
         test_data_env_indoor_history["data_list"] = [
-            {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "10", "voc":"0.1", "pm2.5": "15"},
-            {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "14",  "voc":"0.05", "pm2.5": "15"},
-            {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "15",  "voc":"0.08", "pm2.5": "10"},
-            {"data_time": "4", "temperature_high":"20", "temperature_low":"1", "humidity": "21",  "voc":"0.05", "pm2.5": "5"},
-            {"data_time": "5", "temperature_high":"26", "temperature_low":"16", "humidity": "30", "voc":"0.09", "pm2.5": "12"},
-            {"data_time": "6", "temperature_high":"28", "temperature_low":"18", "humidity": "34", "voc":"0.07", "pm2.5": "12"},
-            {"data_time": "7", "temperature_high":"30", "temperature_low":"22", "humidity": "45", "voc":"0.08", "pm2.5": "13"},
-            {"data_time": "8", "temperature_high":"35", "temperature_low":"22", "humidity": "35", "voc":"0.05", "pm2.5": "5"},
-            {"data_time": "9", "temperature_high":"34", "temperature_low":"18", "humidity": "41", "voc":"0.06", "pm2.5": "8"},
-            {"data_time": "10", "temperature_high":"26", "temperature_low":"16", "humidity": "22", "voc":"0.07", "pm2.5": "11"},
-            {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "19", "voc":"0.06", "pm2.5": "14"},
-            {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "20", "voc":"0.02", "pm2.5": "6"},
+            {"data_time": "1", "temperature_high":"5", "temperature_low":"-10", "humidity": "10", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}],"pm2.5": "15"},
+            {"data_time": "2", "temperature_high":"8", "temperature_low":"-8", "humidity": "14",  "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"17"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "15"},
+            {"data_time": "3", "temperature_high":"13", "temperature_low":"0", "humidity": "15",  "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"17"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "10"},
+            {"data_time": "4", "temperature_high":"20", "temperature_low":"1", "humidity": "21",  "voc":[{"name":"优", "value":"10"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "5"},
+            {"data_time": "5", "temperature_high":"26", "temperature_low":"16", "humidity": "30", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"17"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "12"},
+            {"data_time": "6", "temperature_high":"28", "temperature_low":"18", "humidity": "34", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"1"}], "pm2.5": "12"},
+            {"data_time": "7", "temperature_high":"30", "temperature_low":"22", "humidity": "45", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "13"},
+            {"data_time": "8", "temperature_high":"35", "temperature_low":"22", "humidity": "35", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"17"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "5"},
+            {"data_time": "9", "temperature_high":"34", "temperature_low":"18", "humidity": "41", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "8"},
+            {"data_time": "10", "temperature_high":"26", "temperature_low":"16", "humidity": "22","voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "11"},
+            {"data_time": "11", "temperature_high":"16", "temperature_low":"8", "humidity": "19", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "14"},
+            {"data_time": "12", "temperature_high":"7", "temperature_low":"-6", "humidity": "20", "voc":[{"name":"优", "value":"11"},
+                                                                                                         {"name":"良", "value":"18"},
+                                                                                                         {"name":"差", "value":"2"}], "pm2.5": "6"},
             ]
     elif 'month' == data_type:
         for i in range(1, 31):
@@ -240,22 +321,39 @@ def env_indoor_history(position_id, data_type):
                 "temperature_high": str(random.randint(16, 24)),
                 "temperature_low": str(random.randint(16, 24)),
                 "humidity": str(random.randint(25, 35)),
-                "voc": '0.0'+ str(random.randint(0, 9)),
+                "voc":VOC_LEVEL.get(str(random.randint(0, 3))),
                 "pm2.5": str(random.randint(5, 15))
             }
             test_data_env_indoor_history["data_list"].append(row_data)
 
     elif 'day' == data_type:
+        # 获取当前小时数
+        time_hour = datetime.datetime.now().strftime('%H')
+
         for i in range(0, 24):
             row_data = {
                 "data_time": str(i),
                 "temperature_high": str(random.randint(16, 24)),
                 "temperature_low": str(random.randint(16, 24)),
                 "humidity": str(random.randint(25, 35)),
-                "voc": '0.0'+ str(random.randint(0, 9)),
+                "voc": VOC_LEVEL.get(str(random.randint(0, 3))),
                 "pm2.5": str(random.randint(5, 15))
             }
-            test_data_env_indoor_history["data_list"].append(row_data)
+
+            row_data_zeros = {
+                "data_time": str(i),
+                "temperature_high": '',
+                "temperature_low": '',
+                "humidity": '',
+                "voc": '',
+                "pm2.5": ''
+            }
+            if i <= int(time_hour):
+                test_data_env_indoor_history["data_list"].append(row_data)
+            else:
+                test_data_env_indoor_history["data_list"].append(row_data_zeros)
+        # logger.debug(test_data_env_indoor_history)
+
     return test_data_env_indoor_history
 
 def get_energy_overview(check_id):

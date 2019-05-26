@@ -6,6 +6,7 @@ import os
 
 # import mysql.connector
 import pymysql
+import logging
 # import ConfigParser
 import config
 
@@ -27,7 +28,7 @@ db_host = config.DB_HOST
 database = config.DB_DATABASE
 charset = config.DB_CHARSET
 
-
+logger = logging.getLogger("main")
 
 def get_server():
     if remoteSSH:
@@ -68,7 +69,7 @@ class Database:
 
             # self.connection = mysql.connector.connect(**config)
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
         self.cursor = self.db_connection.cursor()
         # self.cursor = self.connection.cursor(buffered=True, dictionary=True)
 
@@ -79,7 +80,7 @@ class Database:
             self.db_connection.commit()
             return row_count
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
             self.db_connection.rollback()
 
     def insert_del_update_query_one(self, query1, query2, params1=(), params2=()):
@@ -88,7 +89,7 @@ class Database:
             self.cursor.execute(query2, params2)
             self.db_connection.commit()
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
             self.db_connection.rollback()
         return self.cursor.fetchone()
 
@@ -96,14 +97,14 @@ class Database:
         try:
             self.cursor.execute(query, params)
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
         return self.cursor.fetchone()
 
     def query_all(self, query, params=()):
         try:
             self.cursor.execute(query, params)
         except Exception as err:
-            print(repr(err))
+            logger.error(repr(err))
         return self.cursor.fetchall()
 
     def __del__(self):
