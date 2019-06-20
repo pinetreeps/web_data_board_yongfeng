@@ -3,6 +3,9 @@
 # Author: pang song
 # python 3.6
 # Date: 2018/11/05
+'''
+适用于阿里云部署版本，未连接物联网数据库
+'''
 
 import sys
 try:
@@ -12,13 +15,13 @@ except:
     pass
 
 from flask import Flask, request, render_template
-import json, time
+import json
 from auth import user_dal
 # from auth import user_dal
 from utils.is_json import is_json
 from utils.post_json import post_json
 import config
-from get_info import check_info, check_info_wlw, check_security
+from get_info import check_info, check_info_wlw
 
 from flask_bootstrap import Bootstrap
 from flask_cors import CORS
@@ -41,9 +44,9 @@ hdr.setFormatter(formatter)
 logger.addHandler(hdr)
 
 # 输出到终端
-# hdr_s = logging.StreamHandler()
-# hdr_s.setFormatter(formatter)
-# logger.addHandler(hdr_s)
+hdr_s = logging.StreamHandler()
+hdr_s.setFormatter(formatter)
+logger.addHandler(hdr_s)
 
 
 # -------------------------测试接口----------------------------
@@ -56,7 +59,6 @@ def hello_world():
 # 登陆接口
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    logger.info('/login')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -79,7 +81,6 @@ def login():
 # 登出接口
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    logger.info('/logout')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -103,7 +104,6 @@ def logout():
 # 注册接口
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    logger.info('/register')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -130,7 +130,6 @@ def register():
 # 注册用户名重复检查接口
 @app.route('/register_name_check', methods=['GET', 'POST'])
 def register_name_check():
-    logger.info('/register_name_check')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -155,7 +154,6 @@ def register_name_check():
 # 园区概况接口
 @app.route('/area_overview', methods=['GET', 'POST'])
 def area_overview():
-    logger.info('/area_overview')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -179,7 +177,6 @@ def area_overview():
 # http://.../building_overview
 @app.route('/building_overview', methods=['GET', 'POST'])
 def building_overview():
-    logger.info('/building_overview')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -207,7 +204,6 @@ def building_overview():
 # http://.../env_outdoor
 @app.route('/env_outdoor', methods=['GET', 'POST'])
 def env_outdoor():
-    logger.info('/env_outdoor')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -226,10 +222,10 @@ def env_outdoor():
         if user is not None:
             # 查询物联网接口数据
             # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            return check_info_wlw.get_info_wlw(config.URL_WLW + '/env_outdoor', request.get_data())
+            # return check_info_wlw.get_info_wlw(config.URL_WLW + '/env_outdoor', request.get_data())
 
             # 查询虚拟数据
-            # return post_json(0, 'success', check_info.get_env_outdoor())
+            return post_json(0, 'success', check_info.get_env_outdoor())
         else:
             return post_json(data='uid校验失败')
     else:
@@ -239,7 +235,6 @@ def env_outdoor():
 # http://.../env_outdoor_history
 @app.route('/env_outdoor_history', methods=['GET', 'POST'])
 def env_outdoor_history():
-    logger.info('/env_outdoor_history')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -256,12 +251,7 @@ def env_outdoor_history():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询物联网接口数据
-            # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            return check_info_wlw.get_info_wlw(config.URL_WLW + '/env_outdoor_history', request.get_data())
-
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.env_outdoor_history(data.get('data_type')))
+            return post_json(0, 'success', check_info.env_outdoor_history(data.get('data_type')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -271,7 +261,6 @@ def env_outdoor_history():
 # http://.../env_indoor
 @app.route('/env_indoor', methods=['GET', 'POST'])
 def env_indoor():
-    logger.info('/env_indoor')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -288,28 +277,7 @@ def env_indoor():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询物联网接口数据
-            # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            # 替换unity_id为物联网id
-            data['position_id'], position_name = check_info_wlw.get_wlw_id_by_unity_id(data.get('position_id'))
-            result_json = check_info_wlw.get_info_wlw(config.URL_WLW + '/env_indoor', json.dumps(data))
-            try:
-                # 替换位置名称
-                result_dict = json.loads(result_json)
-                result_dict['data']['position_name'] = position_name
-
-                # 替换voc读数 数字转中文
-                result_dict['data']['voc'] = config.VOC_LEVEL[result_dict['data']['voc']]
-
-                result_json = json.dumps(result_dict)
-
-            except Exception as e:
-                logger.error('load json to dict error', repr(e))
-
-            return result_json
-
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.get_env_indoor(data.get('position_id')))
+            return post_json(0, 'success', check_info.get_env_indoor(data.get('position_id')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -319,7 +287,6 @@ def env_indoor():
 # http://.../env_indoor_history
 @app.route('/env_indoor_history', methods=['GET', 'POST'])
 def env_indoor_history():
-    logger.info('/env_indoor_history')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -336,14 +303,7 @@ def env_indoor_history():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询物联网接口数据
-            # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            # 替换unity_id为物联网id
-            data['position_id'] = check_info_wlw.get_wlw_id_by_unity_id(data.get('position_id'))
-            return check_info_wlw.get_info_wlw(config.URL_WLW + '/env_indoor_history', json.dumps(data))
-
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.env_indoor_history(data.get('position_id'), data.get('data_type')))
+            return post_json(0, 'success', check_info.env_indoor_history(data.get('position_id'), data.get('data_type')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -354,7 +314,6 @@ def env_indoor_history():
 # http://.../energy_overview
 @app.route('/energy_overview', methods=['GET', 'POST'])
 def energy_overview():
-    logger.info('/energy_overview')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -371,14 +330,7 @@ def energy_overview():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询物联网接口数据
-            # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            # 替换unity_id为物联网id
-            data['check_id'], check_name = check_info_wlw.get_wlw_id_by_unity_id(data.get('check_id'))
-            return check_info_wlw.get_info_wlw(config.URL_WLW + '/energy_overview', json.dumps(data))
-
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.get_energy_overview(data.get('check_id')))
+            return post_json(0, 'success', check_info.get_energy_overview(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -389,7 +341,6 @@ def energy_overview():
 # http://.../energy_electricity_overview
 @app.route('/energy_electricity_overview', methods=['GET', 'POST'])
 def energy_electricity_overview():
-    logger.info('/energy_electricity_overview')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -406,13 +357,6 @@ def energy_electricity_overview():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询物联网接口数据
-            # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            # 替换unity_id为物联网id
-            # data['check_id'], check_name = check_info_wlw.get_wlw_id_by_unity_id(data.get('check_id'))
-            # return check_info_wlw.get_info_wlw(config.URL_WLW + '/energy_electricity_overview', json.dumps(data))
-
-            # 查询虚拟数据
             return post_json(0, 'success', check_info.get_energy_electricity_overview(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
@@ -423,7 +367,6 @@ def energy_electricity_overview():
 # http://.../energy_electricity
 @app.route('/energy_electricity', methods=['GET', 'POST'])
 def energy_electricity():
-    logger.info('/energy_electricity')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -440,14 +383,7 @@ def energy_electricity():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询物联网接口数据
-            # logger.debug(post_json(0, 'success', check_info.get_env_outdoor()))
-            # 替换unity_id为物联网id
-            data['check_id'], check_name = check_info_wlw.get_wlw_id_by_unity_id(data.get('check_id'))
-            return check_info_wlw.get_info_wlw(config.URL_WLW + '/energy_electricity', json.dumps(data))
-
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.get_energy_electricity(data.get('check_id')))
+            return post_json(0, 'success', check_info.get_energy_electricity(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -457,7 +393,6 @@ def energy_electricity():
 # http://.../energy_gas
 @app.route('/energy_gas', methods=['GET', 'POST'])
 def energy_gas():
-    logger.info('/energy_gas')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -484,7 +419,6 @@ def energy_gas():
 # http://.../energy_water_overview
 @app.route('/energy_water_overview', methods=['GET', 'POST'])
 def energy_water_overview():
-    logger.info('/energy_water_overview')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -512,7 +446,6 @@ def energy_water_overview():
 # http://.../energy_check_hot
 @app.route('/energy_check_hot', methods=['GET', 'POST'])
 def energy_check_hot():
-    logger.info('/energy_check_hot')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -542,7 +475,6 @@ def energy_check_hot():
 
 @app.route('/monitor_check_ac', methods=['GET', 'POST'])
 def monitor_check_ac():
-    logger.info('/monitor_check_ac')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -559,28 +491,7 @@ def monitor_check_ac():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询虚拟数据，以便获得设备信息、图片等
-            result_dict = check_info.get_device_ac_data(data.get('check_id'))
-            # 替换check_id 和 前端显示名称
-            data['check_id'], check_name = check_info_wlw.get_wlw_id_by_unity_id(data.get('check_id'))
-            # 使用替换后的check_id查询物联网接口数据，以便获得设备状态
-            result_json_wlw = check_info_wlw.get_info_wlw(config.URL_WLW + '/monitor_check_ac_wlw', json.dumps(data))
-            # time.sleep(0.1)
-            try:
-                # 替换位置名称
-                result_dict['device_name'] = check_name
-                # 物联网数据转为字典
-                result_dict_wlw = json.loads(result_json_wlw)
-
-                # 物联网状态替换虚拟数据状态
-                result_dict['device_status'] = result_dict_wlw['data']['device_status']
-
-            except Exception as e:
-                logger.error('load json to dict error, {}'.format(repr(e)))
-
-            return post_json(0, 'success', result_dict)
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.get_device_ac_data(data.get('check_id')))
+            return post_json(0, 'success', check_info.get_device_ac_data(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -592,7 +503,6 @@ def monitor_check_ac():
 
 @app.route('/monitor_check_ea', methods=['GET', 'POST'])
 def monitor_check_ea():
-    logger.info('/monitor_check_ea')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -609,29 +519,7 @@ def monitor_check_ea():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 查询虚拟数据，以便获得设备信息、图片等
-            result_dict = check_info.get_device_ea_data(data.get('check_id'))
-            # 替换check_id 和 前端显示名称
-            data['check_id'], check_name = check_info_wlw.get_wlw_id_by_unity_id(data.get('check_id'))
-            # 使用替换后的check_id查询物联网接口数据，以便获得设备状态
-            result_json_wlw = check_info_wlw.get_info_wlw(config.URL_WLW + '/monitor_check_ea_wlw', json.dumps(data))
-
-            try:
-                # 替换位置名称
-                result_dict['device_name'] = check_name
-                # 物联网数据转为字典
-                result_dict_wlw = json.loads(result_json_wlw)
-
-                # 物联网状态替换虚拟数据状态
-                result_dict['device_status'] = result_dict_wlw['data']['device_status']
-
-            except Exception as e:
-                logger.error('load json to dict error, {}'.format(repr(e)))
-
-            return post_json(0, 'success', result_dict)
-
-            # 查询虚拟数据
-            # return post_json(0, 'success', check_info.get_device_ea_data(data.get('check_id')))
+            return post_json(0, 'success', check_info.get_device_ea_data(data.get('check_id')))
         else:
             return post_json(data='uid校验失败')
     else:
@@ -643,7 +531,6 @@ def monitor_check_ea():
 
 @app.route('/security_camera', methods=['GET', 'POST'])
 def security_camera():
-    logger.info('/security_camera')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -672,7 +559,6 @@ def security_camera():
 
 @app.route('/security_device', methods=['GET', 'POST'])
 def security_device():
-    logger.info('/security_device')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -701,7 +587,6 @@ def security_device():
 
 @app.route('/fire_equipment', methods=['GET', 'POST'])
 def fire_equipment():
-    logger.info('/fire_equipment')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -731,7 +616,6 @@ def fire_equipment():
 
 @app.route('/config_user', methods=['GET', 'POST'])
 def config_user():
-    logger.info('/config_user')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -759,7 +643,6 @@ def config_user():
 
 @app.route('/config_area', methods=['GET', 'POST'])
 def config_area():
-    logger.info('/config_area')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -787,7 +670,6 @@ def config_area():
 
 @app.route('/config_building', methods=['GET', 'POST'])
 def config_building():
-    logger.info('/config_building')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -815,7 +697,6 @@ def config_building():
 
 @app.route('/config_room', methods=['GET', 'POST'])
 def config_room():
-    logger.info('/config_room')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -843,7 +724,6 @@ def config_room():
 
 @app.route('/config_property', methods=['GET', 'POST'])
 def config_property():
-    logger.info('/config_property')
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -866,91 +746,7 @@ def config_property():
     else:
         return render_template('404.html')
 
-# -------------------------6.安防信息接口----------------------------
-# 6.1 接收物联网安防信息接口，保存到数据库
-# http://.../security_bim
 
-@app.route('/security_bim', methods=['GET', 'POST'])
-def security_bim():
-    logger.info('/security_bim')
-    if request.method == 'GET':
-        return '<h1>请使用post方法</h1>'
-    elif request.method == 'POST':
-        # 参数校验
-        if is_json(request.get_data()):
-            data = json.loads(request.get_data())
-            logger.debug(data)
-            # 检测规定参数是否存在
-            if 'security_time' in data.keys() and 'device_id' in data.keys():
-                # 存入数据库
-                check_security.save_security_msg(data)
-                return post_json(0, 'success')
-            else:
-                return post_json(data='输入参数不完整或者不正确')
-        else:
-            return post_json(data='json校验失败')
-    else:
-        return render_template('404.html')
-
-# 6.2 从数据库读取安防信息
-# http://.../security_msg
-
-@app.route('/security_msg', methods=['GET', 'POST'])
-def security_msg():
-    logger.info('/security_msg')
-    if request.method == 'GET':
-        return '<h1>请使用post方法</h1>'
-    elif request.method == 'POST':
-        # 参数校验
-        if is_json(request.get_data()):
-            data = json.loads(request.get_data())
-            logger.debug(data)
-            if 'uid' in data.keys():
-                # 检测规定参数是否存在
-                user = user_dal.UserDal().check_uid(data)
-            else:
-                return post_json(data='输入参数不完整或者不正确')
-        else:
-            return post_json(data='json校验失败')
-            # 获取数据
-        if user is not None:
-            return post_json(0, 'success', check_security.get_security_msg())
-        else:
-            return post_json(data='uid校验失败')
-    else:
-        return render_template('404.html')
-
-# 6.3 更新数据库安防信息状态
-# http://.../security_msg_update
-
-@app.route('/security_msg_update', methods=['GET', 'POST'])
-def security_msg_update():
-    logger.info('/security_msg_update')
-    if request.method == 'GET':
-        return '<h1>请使用post方法</h1>'
-    elif request.method == 'POST':
-        # 参数校验
-        if is_json(request.get_data()):
-            data = json.loads(request.get_data())
-            logger.debug(data)
-            if 'uid' in data.keys() and 'security_id' in data.keys() and 'security_update_code' in data.keys():
-                # 检测规定参数是否存在
-                user = user_dal.UserDal().check_uid(data)
-            else:
-                return post_json(data='输入参数不完整或者不正确')
-        else:
-            return post_json(data='json校验失败')
-            # 获取数据
-        if user is not None:
-            success_label = check_security.update_security_msg(data)
-            if success_label:
-                return post_json(0, 'success')
-            else:
-                return post_json(data='update failed')
-        else:
-            return post_json(data='uid校验失败')
-    else:
-        return render_template('404.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8290, debug=True)

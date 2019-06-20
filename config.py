@@ -6,14 +6,16 @@
 
 # --------------开关控制  --------------
 # 这个参数主要是用于控制远程ssh连接数据库还是本地连接数据库 False为部署线上，True为本地(需要远程访问数据库)
-# IS_LOCAL = True
-IS_LOCAL = False
+IS_LOCAL = True
+# IS_LOCAL = False
 
 # --------------文件目录  --------------
 # 阿里云服务器
-WORK_PATH = "/root/data1/web_data_board_yongfeng/"
+# WORK_PATH = "/root/data1/web_data_board_yongfeng/"
 # 本机
 # WORK_PATH = "/Users/pinetree_mac/ps_use/py_works/web_data_board_yongfeng/"
+# 现场目录
+WORK_PATH = "/home/yongfengbim/web_data_board_yongfeng/"
 
 # --------------日志文件配置--------------
 LOGGING_FILE = WORK_PATH + "log/main.log"
@@ -47,5 +49,11 @@ DB_SS_CHARSET = 'utf8'
 APPLY_CODE = 'yongfeng2018'
 
 
+# --------------物联网配置项目--------------
+
+URL_WLW = 'http://192.168.1.54:8777'
+
+# --------------替换配置项--------------
+VOC_LEVEL = {'0.00':'优', '1.00':'良好', '2.00':'一般', '3.00':'差'}
 
 
