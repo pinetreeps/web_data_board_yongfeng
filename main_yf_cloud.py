@@ -21,7 +21,7 @@ from auth import user_dal
 from utils.is_json import is_json
 from utils.post_json import post_json
 import config
-from get_info import check_info, check_info_wlw
+from get_info import check_info, check_info_wlw, check_security
 
 from flask_bootstrap import Bootstrap
 from flask_cors import CORS
@@ -746,6 +746,91 @@ def config_property():
     else:
         return render_template('404.html')
 
+# -------------------------6.安防信息接口----------------------------
+# 6.1 接收物联网安防信息接口，保存到数据库
+# http://.../security_bim
+
+@app.route('/security_bim', methods=['GET', 'POST'])
+def security_bim():
+    logger.info('/security_bim')
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            logger.debug(data)
+            # 检测规定参数是否存在
+            if 'security_time' in data.keys() and 'device_id' in data.keys():
+                # 存入数据库
+                check_security.save_security_msg(data)
+                return post_json(0, 'success')
+            else:
+                return post_json(data='输入参数不完整或者不正确')
+        else:
+            return post_json(data='json校验失败')
+    else:
+        return render_template('404.html')
+
+# 6.2 从数据库读取安防信息
+# http://.../security_msg
+
+@app.route('/security_msg', methods=['GET', 'POST'])
+def security_msg():
+    logger.info('/security_msg')
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            logger.debug(data)
+            if 'uid' in data.keys():
+                # 检测规定参数是否存在
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return post_json(data='输入参数不完整或者不正确')
+        else:
+            return post_json(data='json校验失败')
+            # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_security.get_security_msg())
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 6.3 更新数据库安防信息状态
+# http://.../security_msg_update
+
+@app.route('/security_msg_update', methods=['GET', 'POST'])
+def security_msg_update():
+    logger.info('/security_msg_update')
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            logger.debug(data)
+            if 'uid' in data.keys() and 'security_id' in data.keys() and 'security_update_code' in data.keys():
+                # 检测规定参数是否存在
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return post_json(data='输入参数不完整或者不正确')
+        else:
+            return post_json(data='json校验失败')
+            # 获取数据
+        if user is not None:
+            success_label = check_security.update_security_msg(data)
+            if success_label:
+                return post_json(0, 'success')
+            else:
+                return post_json(data='update failed')
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
 
 
 if __name__ == '__main__':
