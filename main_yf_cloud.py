@@ -650,7 +650,6 @@ def control_check_wlw():
                         "timing_set_date": "2019-05-15",
                         "timing_set_time": "00:09:10",
                         "enable": "1",
-                        "repeat": [1, 2, 3, 4, 5, 7]
                     },
                     {
                         "timing_set_device_id": "112abc",
@@ -660,7 +659,6 @@ def control_check_wlw():
                         "timing_set_date": "1",
                         "timing_set_time": "00:09:10",
                         "enable": "1",
-                        "repeat": [1, 2, 3, 4, 5, 7]
                     },
                 ]
             }
