@@ -615,7 +615,7 @@ def fire_equipment():
 # http://.../control_check_wlw
 
 @app.route('/control_check_wlw', methods=['GET', 'POST'])
-def config_user():
+def control_check_wlw():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -675,7 +675,7 @@ def config_user():
 # http://.../control_wlw
 
 @app.route('/control_wlw', methods=['GET', 'POST'])
-def config_user():
+def control_wlw():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
