@@ -9,7 +9,8 @@ def is_json(json_str):
         # json_object = json.loads(json_str, strict=False)
         json_object = json.loads(json_str)
         json_object
-    except ValueError as e:
+    except Exception as e:
+        # ValueError as e:
         logger.error(repr(e))
         return False
     return True
