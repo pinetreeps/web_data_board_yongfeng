@@ -1925,5 +1925,166 @@ def update_property_data(data_dict):
     }
     return test_data
 
+
+def get_control_check_wlw_data(check_id):
+    '''
+    物联网设备控制命令查询接口，使用唯一id 查询设备类型
+    :return: dict
+    '''
+    # check_name = get_name_by_id(check_id)
+    device_type = {"acfresh": "空调_新风机组",
+                   "acfan": "空调_风机管盘",
+                   "accold": "空调_制冷机组",
+                   "socket": "智能插座",
+                   "coldwater": "冷水泵"}
+    # 测试数据
+    test_data = {}
+    if check_id == 'acfresh':
+        test_data = {
+            # "device_name": "空调_新风机组",
+            "device_name": device_type.get(check_id),
+            "device_status": {
+                "acfresh_set_mode_time_or_order": "1",
+                "acfresh_set_switch": "1",
+                "acfresh_set_temperature": 0,
+                "timing_orders_enable": "1"
+            },
+            "timing_orders": [
+                {
+                    "timing_set_device_id": "111abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "1",
+                    "timing_set_date": "2019-05-15",
+                    "timing_set_time": "00:09:10",
+                    "enable": "1",
+                },
+                {
+                    "timing_set_device_id": "112abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "3",
+                    "timing_set_date": "1",
+                    "timing_set_time": "00:09:10",
+                    "enable": "1",
+                },
+            ]
+        }
+    elif check_id == 'acfan':
+        test_data = {
+            # "device_name": "空调_风机管盘",
+            "device_name": device_type.get(check_id),
+            "device_status": {
+                "acfan_set_switch": "1",
+                "acfan_set_mode": "1",
+                "acfan_set_pm25": "150",
+                "acfan_set_season": "1",
+                "acfan_set_summer_min_temperature": 26,
+                "acfan_set_winter_max_temperature": 17,
+                "acfan_set_pm25_value": "150",
+                "acfan_set_temperature_value": "3",
+                "acfan_set_lcd_light": "1",
+                "timing_orders_enable": "1"
+            },
+            "timing_orders": [
+                {
+                    "timing_set_device_id": "111abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "1",
+                    "timing_set_date": "2019-05-15",
+                    "timing_set_time": "00:09:10",
+                    "enable": "1",
+                },
+                {
+                    "timing_set_device_id": "112abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "3",
+                    "timing_set_date": "1",
+                    "timing_set_time": "00:09:10",
+                    "enable": "1",
+                },
+            ]
+        }
+    elif check_id == 'accold':
+        test_data = {
+            # "device_name": "空调_制冷机组",
+            "device_name": device_type.get(check_id),
+            "device_status": {
+                "accold_set_input_cold_water_switch": "1",
+                "accold_set_output_cold_water_switch": "1",
+                "accold_set_input_hot_water_switch": "1",
+                "accold_set_output_hot_water_switch": "1",
+                "accold_set_ac_switch": "1",
+                "timing_orders_enable": "1"
+            },
+            "timing_orders": [
+                {
+                    "timing_set_device_id": "111abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "1",
+                    "timing_set_date": "2019-05-15",
+                    "timing_set_time": "00:09:10",
+                    "enable": "1",
+                },
+                {
+                    "timing_set_device_id": "112abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "3",
+                    "timing_set_date": "1",
+                    "timing_set_time": "00:09:10",
+                    "enable": "1",
+                },
+            ]
+        }
+    elif check_id == 'socket':
+        test_data = {
+            # "device_name": "智能插座",
+            "device_name": device_type.get(check_id),
+            "device_status": {
+                "socket_set_switch": "1",
+                "timing_orders_enable": "1"
+            },
+            "timing_orders": [
+                {
+                    "timing_set_device_id": "111abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "1",
+                    "timing_set_date": "2019-05-15",
+                    "timing_set_time": "00:09:10",
+                    "enable": "0",
+                }
+            ]
+        }
+    elif check_id == 'coldwater':
+        test_data = {
+            # "device_name": "冷水泵",
+            "device_name": device_type.get(check_id),
+            "device_status": {
+                "coldwater_set_switch": "1",
+                "timing_orders_enable": "1"
+            },
+            "timing_orders": [
+                {
+                    "timing_set_device_id": "111abc",
+                    "timing_set_order_id": "1",
+                    "timing_set_order": "1",
+                    "timing_set_mode": "1",
+                    "timing_set_date": "2019-05-15",
+                    "timing_set_time": "00:09:10",
+                    "enable": "0",
+                }
+            ]
+        }
+    else:
+        test_data = 'unknown device type'
+
+
+    return test_data
+
 if __name__ == '__main__':
     print('---', get_name_by_id('room_a2f228'))

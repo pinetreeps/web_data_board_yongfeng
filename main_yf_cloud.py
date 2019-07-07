@@ -632,38 +632,9 @@ def control_check_wlw():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            # 临时数据
-            return_data = {
-                "device_name": "新风机组",
-                "device_status": {
-                    "acfresh_set_mode_time_or_order": "1",
-                    "acfresh_set_switch": "1",
-                    "acfresh_set_temperature": "0",
-                    "timing_orders_enable":"1"
-                },
-                "timing_orders": [
-                    {
-                        "timing_set_device_id": "111abc",
-                        "timing_set_order_id": "1",
-                        "timing_set_order": "1",
-                        "timing_set_mode": "1",
-                        "timing_set_date": "2019-05-15",
-                        "timing_set_time": "00:09:10",
-                        "enable": "1",
-                    },
-                    {
-                        "timing_set_device_id": "112abc",
-                        "timing_set_order_id": "1",
-                        "timing_set_order": "1",
-                        "timing_set_mode": "3",
-                        "timing_set_date": "1",
-                        "timing_set_time": "00:09:10",
-                        "enable": "1",
-                    },
-                ]
-            }
+            # return post_json(0, 'success', return_data)
+            return post_json(0, 'success', check_info.get_control_check_wlw_data(data.get('check_id')))
 
-            return post_json(0, 'success', return_data)
         else:
             return post_json(data='uid校验失败')
     else:
