@@ -1926,23 +1926,23 @@ def update_property_data(data_dict):
     return test_data
 
 
-def get_control_check_wlw_data(check_id):
+def get_control_check_wlw_data(device_type):
     '''
     物联网设备控制命令查询接口，使用唯一id 查询设备类型
     :return: dict
     '''
     # check_name = get_name_by_id(check_id)
-    device_type = {"acfresh": "空调_新风机组",
+    device_type_dict = {"acfresh": "空调_新风机组",
                    "acfan": "空调_风机管盘",
                    "accold": "空调_制冷机组",
                    "socket": "智能插座",
                    "coldwater": "冷水泵"}
     # 测试数据
     test_data = {}
-    if check_id == 'acfresh':
+    if device_type == 'acfresh':
         test_data = {
             # "device_name": "空调_新风机组",
-            "device_name": device_type.get(check_id),
+            "device_name": device_type_dict.get(device_type),
             "device_status": {
                 "acfresh_set_mode_time_or_order": "1",
                 "acfresh_set_switch": "1",
@@ -1970,10 +1970,10 @@ def get_control_check_wlw_data(check_id):
                 },
             ]
         }
-    elif check_id == 'acfan':
+    elif device_type == 'acfan':
         test_data = {
             # "device_name": "空调_风机管盘",
-            "device_name": device_type.get(check_id),
+            "device_name": device_type_dict.get(device_type),
             "device_status": {
                 "acfan_set_switch": "1",
                 "acfan_set_mode": "1",
@@ -2007,10 +2007,10 @@ def get_control_check_wlw_data(check_id):
                 },
             ]
         }
-    elif check_id == 'accold':
+    elif device_type == 'accold':
         test_data = {
             # "device_name": "空调_制冷机组",
-            "device_name": device_type.get(check_id),
+            "device_name": device_type_dict.get(device_type),
             "device_status": {
                 "accold_set_input_cold_water_switch": "1",
                 "accold_set_output_cold_water_switch": "1",
@@ -2040,10 +2040,10 @@ def get_control_check_wlw_data(check_id):
                 },
             ]
         }
-    elif check_id == 'socket':
+    elif device_type == 'socket':
         test_data = {
             # "device_name": "智能插座",
-            "device_name": device_type.get(check_id),
+            "device_name": device_type_dict.get(device_type),
             "device_status": {
                 "socket_set_switch": "1",
                 "timing_orders_enable": "1"
@@ -2060,10 +2060,10 @@ def get_control_check_wlw_data(check_id):
                 }
             ]
         }
-    elif check_id == 'coldwater':
+    elif device_type == 'coldwater':
         test_data = {
             # "device_name": "冷水泵",
-            "device_name": device_type.get(check_id),
+            "device_name": device_type_dict.get(device_type),
             "device_status": {
                 "coldwater_set_switch": "1",
                 "timing_orders_enable": "1"

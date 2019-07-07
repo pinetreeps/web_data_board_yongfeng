@@ -623,7 +623,7 @@ def control_check_wlw():
         if is_json(request.get_data()):
             data = json.loads(request.get_data())
             logger.debug(data)
-            if 'uid' in data.keys() and 'check_id' in data.keys():
+            if 'uid' in data.keys() and 'device_type' in data.keys():
                 # 检查uid
                 user = user_dal.UserDal().check_uid(data)
             else:
@@ -633,7 +633,7 @@ def control_check_wlw():
         # 获取数据
         if user is not None:
             # return post_json(0, 'success', return_data)
-            return post_json(0, 'success', check_info.get_control_check_wlw_data(data.get('check_id')))
+            return post_json(0, 'success', check_info.get_control_check_wlw_data(data.get('device_type')))
 
         else:
             return post_json(data='uid校验失败')
