@@ -640,7 +640,7 @@ def control_check_wlw():
     else:
         return render_template('404.html')
 
-# 5.1 修改接口
+# 5.2 修改接口
 # http://.../control_wlw
 
 @app.route('/control_wlw', methods=['GET', 'POST'])
@@ -661,7 +661,8 @@ def control_wlw():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            return post_json(0, 'success')
+            # 便于调试，返回发送内容
+            return post_json(0, 'success', data)
         else:
             return post_json(data='uid校验失败')
     else:

@@ -1946,7 +1946,7 @@ def get_control_check_wlw_data(device_type):
             "device_status": {
                 "acfresh_set_mode_time_or_order": "1",
                 "acfresh_set_switch": "1",
-                "acfresh_set_temperature": 0,
+                "acfresh_set_temperature": 20,
                 "timing_orders_enable": "1"
             },
             "timing_orders": [
@@ -1977,12 +1977,12 @@ def get_control_check_wlw_data(device_type):
             "device_status": {
                 "acfan_set_switch": "1",
                 "acfan_set_mode": "1",
-                "acfan_set_pm25": "150",
+                "acfan_set_pm25": 150,
                 "acfan_set_season": "1",
                 "acfan_set_summer_min_temperature": 26,
                 "acfan_set_winter_max_temperature": 17,
-                "acfan_set_pm25_value": "150",
-                "acfan_set_temperature_value": "3",
+                "acfan_set_pm25_value": 16,
+                "acfan_set_temperature_value": 3,
                 "acfan_set_lcd_light": "1",
                 "timing_orders_enable": "1"
             },
