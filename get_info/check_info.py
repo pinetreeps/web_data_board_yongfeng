@@ -1603,6 +1603,8 @@ def get_device_ac_data(check_id):
                 {"device_status_name":"净化器启停控制显示", "device_status_value":"开启"},
                 {"device_status_name":"送风温度传感器", "device_status_value": "24"},
                 {"device_status_name":"PM2.5传感器", "device_status_value":"10"},
+                {"device_status_name":"送风温度设定", "device_status_value":"20"},
+                {"device_status_name":"水阀控制开度显示", "device_status_value":"1"},
             ]
         }
     elif device_info.get("device_code") == 'OA02':
@@ -1633,6 +1635,8 @@ def get_device_ac_data(check_id):
                 {"device_status_name":"净化器启停控制显示", "device_status_value":"开启"},
                 {"device_status_name":"送风温度传感器", "device_status_value": "24"},
                 {"device_status_name":"PM2.5传感器", "device_status_value":"10"},
+                {"device_status_name":"送风温度设定", "device_status_value": "20"},
+                {"device_status_name":"水阀控制开度显示", "device_status_value": "1"},
             ]
         }
     elif device_info.get("device_code") == 'KT01':
@@ -1715,6 +1719,7 @@ def get_device_ea_data(check_id):
                 },
             ],
             "device_status": [
+                {"device_status_name": "智能插座校时", "device_status_value": "正常" },
                 {"device_status_name": "当前电能", "device_status_value": "0" },
                 {"device_status_name": "信号强度", "device_status_value": "高" },
                 {"device_status_name": "定时通断电开关", "device_status_value": "停用" },
