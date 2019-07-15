@@ -107,6 +107,15 @@ class Database:
             logger.error(repr(err))
         return self.cursor.fetchall()
 
+    def query_all_no_params(self, query):
+        try:
+            self.cursor.execute(query)
+            # res = self.cursor.fetchall()
+        except Exception as err:
+            logger.error(repr(err))
+            # res = ()
+        return  self.cursor.fetchall()
+
     def __del__(self):
         self.cursor.close()
         self.db_connection.close()

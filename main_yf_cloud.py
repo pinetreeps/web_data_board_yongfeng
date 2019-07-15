@@ -837,11 +837,38 @@ def config_building():
     else:
         return render_template('404.html')
 
-# 7.2.3房间信息配置
-# http://.../config_room
+# 7.2.3房间信息查询
+# http://.../config_room_check
 
-@app.route('/config_room', methods=['GET', 'POST'])
-def config_room():
+@app.route('/config_room_check', methods=['GET', 'POST'])
+def config_room_check():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            logger.debug(data)
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return post_json(data='输入参数不完整或者不正确')
+        else:
+            return post_json(data='json校验失败')
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success', check_info.check_room_data(data))
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+# 7.2.4房间信息修改
+# http://.../config_room_update
+
+@app.route('/config_room_update', methods=['GET', 'POST'])
+def config_room_update():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -864,11 +891,11 @@ def config_room():
     else:
         return render_template('404.html')
 
-# 7.2.4物业信息管理
-# http://.../config_property
+# 7.2.5物业信息查询
+# http://.../config_property_check
 
-@app.route('/config_property', methods=['GET', 'POST'])
-def config_property():
+@app.route('/config_property_check', methods=['GET', 'POST'])
+def config_property_check():
     if request.method == 'GET':
         return '<h1>请使用post方法</h1>'
     elif request.method == 'POST':
@@ -891,6 +918,65 @@ def config_property():
     else:
         return render_template('404.html')
 
+# 7.2.6物业信息修改
+# http://.../config_property_update
+
+@app.route('/config_property_update', methods=['GET', 'POST'])
+def config_property_update():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            logger.debug(data)
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return post_json(data='输入参数不完整或者不正确')
+        else:
+            return post_json(data='json校验失败')
+        # 获取数据
+        if user is not None:
+            flag = check_info.update_property_data(data)
+            if flag == 1:
+                return post_json(0, 'success')
+            else:
+                return post_json(1, 'fail', '更新失败')
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
+
+
+# -------------------------8.数据下载----------------------------
+# 8.1报表数据下载
+# http://.../data_download
+
+@app.route('/data_download', methods=['GET', 'POST'])
+def data_download():
+    if request.method == 'GET':
+        return '<h1>请使用post方法</h1>'
+    elif request.method == 'POST':
+        # 参数校验
+        if is_json(request.get_data()):
+            data = json.loads(request.get_data())
+            logger.debug(data)
+            if 'uid' in data.keys() and 'check_id' in data.keys():
+                # 检查uid
+                user = user_dal.UserDal().check_uid(data)
+            else:
+                return post_json(data='输入参数不完整或者不正确')
+        else:
+            return post_json(data='json校验失败')
+        # 获取数据
+        if user is not None:
+            return post_json(0, 'success',{"data_url": "data.xls"})
+        else:
+            return post_json(data='uid校验失败')
+    else:
+        return render_template('404.html')
 
 
 if __name__ == '__main__':

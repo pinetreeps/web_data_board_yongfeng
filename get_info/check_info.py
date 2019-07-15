@@ -9,7 +9,7 @@
 import random, datetime
 import logging
 from utils import mysql_utils
-from utils import sqlserver_util
+# from utils import sqlserver_util
 
 logger = logging.getLogger("main")
 
@@ -18,6 +18,17 @@ WEEK_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周�
 # VOC_LEVEL = {'0':'空气良好', '1':'轻度污染', '2':'中度污染', '3':'重度污染'}
 VOC_LEVEL = {'0':'优', '1':'良好', '2':'一般', '3':'差'}
 
+PROPERTY_DICT = {
+    'gas_boiler':'锅炉用气',
+    'gas_kitchen': '厨房用气',
+    'gas_other': '其他用气',
+    'water_live': '生活用水',
+    'water_ac': '空调用水',
+    'water_kitchen': '厨房用水',
+    'water_other': '其他用水',
+}
+
+# --------------mysql 取数据 ------------------
 
 def get_name_by_id(check_id):
     '''
@@ -55,6 +66,92 @@ def get_device_name_by_id(check_id):
         device_info["device_type"] = row1[2]
         device_info["device_position_id"] = row1[3]
     return device_info
+
+
+def get_property_data_by_date_type(start_time, end_time, value_type):
+    # 获取物业数据
+    '''
+    get name by check_id
+    :return: name
+    '''
+    value_list = []
+    # value_list = [
+    #     {
+    #         "date": "2018-01-10",
+    #         "value": "345",
+    #         "user": "admin",
+    #         "update_time": "2018-01-10 16:52:30",
+    #     },
+    #     {
+    #         "date": "2018-01-11",
+    #         "value": "245",
+    #         "user": "admin",
+    #         "update_time": "2018-01-11 15:21:30",
+    #     },
+    # ]
+    table_name = 'yf_bim_energy_water'
+    if value_type.split('_')[0] == 'gas':
+        table_name = 'yf_bim_energy_gas'
+
+    data_conn = mysql_utils.Database()
+    sql1 = """
+          SELECT DATE_FORMAT(g.value_date,'%Y-%m-%d') as date, g.value, g.value_type, u.uname, DATE_FORMAT(g.utime,'%Y-%m-%d %T') as utime 
+          FROM {tn} g LEFT JOIN yf_bim_user_info u ON g.uid = u.uid
+          WHERE value_type = '{vt}' AND value_date BETWEEN '{st}' AND '{et}'
+          """.format(tn=table_name, vt=value_type, st=start_time, et=end_time)
+    print(sql1)
+    rows = data_conn.query_all_no_params(sql1)
+    # rows = data_conn.query_one(sql1)
+
+    # logger.debug(rows)
+    if rows != None:
+        # print(rows)
+        for row in rows:
+            value_list.append({
+                "date": row[0],
+                "value": row[1],
+                "user": row[3],
+                "update_time": row[4]})
+    return value_list
+
+def update_property_data_by_date_type(update_type, date_time, value_type, update_value, uid):
+    # 更新物业数据
+    '''
+    get name by check_id
+    :return: name
+    '''
+    table_name = 'yf_bim_energy_water'
+    if value_type.split('_')[0] == 'gas':
+        table_name = 'yf_bim_energy_gas'
+
+    data_conn = mysql_utils.Database()
+
+    if update_type == 'add':
+
+        sql1 = """
+            INSERT INTO  {tn} (position_id, position_name, value_date, value, value_type, uid, ctime, utime) 
+            VALUES ('empty', 'empty', '{vd}', '{v}', '{vt}', '{uid}', now(), now());
+            """.format(tn=table_name, vd=date_time, v=update_value, vt=value_type, uid=uid)
+
+    elif update_type == 'delete':
+        sql1 = """
+            DELETE FROM {tn} WHERE value_date = '{vd}' and value_type = '{vt}'
+            """.format(tn=table_name, vd=date_time, vt=value_type)
+
+    elif update_type == 'update':
+        sql1 = """
+            UPDATE {tn} SET value = '{v}', uid='{uid}', utime=now()
+            WHERE value_date = '{vd}' and value_type = '{vt}'
+            """.format(tn=table_name, vd=date_time, v=update_value, vt=value_type, uid=uid)
+    else:
+        logger.error('unknown update_type')
+        return 0
+    data_conn.insert_del_update(sql1)
+    logger.info('save data success')
+    # print('')
+    print(sql1)
+    return 1
+
 
 # --------------物联网取数据 ------------------
 def get_data_sql_server(check_id):
@@ -97,22 +194,19 @@ def get_area_overview():
         "greening_rate": "30",
         "company_amount": "1",
         "area_people_amount": "300",
-        "companys_ratio": [
+        # 建筑总用电、建筑单位平米用电、室外pm2.5、室内平均pm2.5
+        "electricity_overview": "451.23",
+        "electricity_per_m2": "1.23",
+        "outdoor_pm25": "120",
+        "indoor_pm25": "80",
+        "companys_ratio":[
             {
-                "ratio_name": "照明",
-                "ratio_value": "65"
+                "ratio_name":"高科技企业",
+                "ratio_value":"5"
             },
             {
-                "ratio_name": "空调",
-                "ratio_value": "5"
-            },
-            {
-                "ratio_name": "电器",
-                "ratio_value": "15"
-            },
-            {
-                "ratio_name": "其他",
-                "ratio_value": "0"
+                "ratio_name":"其他企业",
+                "ratio_value":"1"
             }]
     }
     return test_data_area_overview
@@ -1444,6 +1538,7 @@ def get_device_ac_data(check_id):
 
     # # 测试数据
     if device_info.get("device_code") == 'FP03':
+        # 空调 风机管盘 FP03
         test_data = {
             "device_name":"{}".format(device_info.get("device_name")),
             "device_pic": "FP03.jpg",
@@ -1477,6 +1572,7 @@ def get_device_ac_data(check_id):
             ]
         }
     elif device_info.get("device_code") == 'FP04':
+        # 空调 风机管盘 FP04
         test_data = {
             "device_name":"{}".format(device_info.get("device_name")),
             "device_pic": "FP04.jpg",
@@ -1510,6 +1606,7 @@ def get_device_ac_data(check_id):
             ]
         }
     elif device_info.get("device_code") == 'FP05':
+        # 空调 风机管盘 FP05
         test_data = {
             "device_name":"{}".format(device_info.get("device_name")),
             "device_pic": "FP05.jpg",
@@ -1543,6 +1640,7 @@ def get_device_ac_data(check_id):
             ]
         }
     elif device_info.get("device_code") == 'FP06' or device_info.get("device_code") == 'FP08':
+        # 空调 风机管盘 FP06 or 08
         test_data = {
             "device_name":"{}".format(device_info.get("device_name")),
             "device_pic": "FP06.jpg",
@@ -1903,6 +2001,24 @@ def update_building_data(data_dict):
     }
     return test_data
 
+def check_room_data(data_dict):
+    '''
+    :param data_dict:
+    :return:
+    '''
+    # # 测试数据
+    test_data ={
+        "room_id": data_dict.get('room_id'),
+        "room_name": data_dict.get('room_name'),
+    }
+
+    return_data = {
+        "check_name": PROPERTY_DICT.get(data_dict.get('check_id')),
+        "value_list": get_property_data_by_date_type(data_dict.get('start_date'), data_dict.get('end_date'), data_dict.get('check_id'))
+    }
+    # return test_data
+    return return_data
+
 def update_room_data(data_dict):
     '''
     :param data_dict:
@@ -1920,15 +2036,14 @@ def update_property_data(data_dict):
     :param data_dict:
     :return:
     '''
-    # # 测试数据
-    test_data ={
-        "date": data_dict.get('date'),
-        "gas_boiler": data_dict.get('value1'),
-        "gas_kitchen": data_dict.get('value2'),
-        "value1": data_dict.get('value3'),
-        "value2": data_dict.get('value4'),
-    }
-    return test_data
+    # update_property_data_by_date_type('update', '2019-07-15', 'gas_other', '1230', '6fb50d7e-1e54-11e9-98ce-00163e10c840')
+    flag = update_property_data_by_date_type(data_dict.get('update_type'),
+                                             data_dict.get('date'),
+                                             data_dict.get('check_id'),
+                                             data_dict.get('update_value'),
+                                             data_dict.get('uid'))
+
+    return flag
 
 
 def get_control_check_wlw_data(device_type):
@@ -2092,4 +2207,11 @@ def get_control_check_wlw_data(device_type):
     return test_data
 
 if __name__ == '__main__':
-    print('---', get_name_by_id('room_a2f228'))
+    # print('---', get_name_by_id('room_a2f228'))
+
+    # print(get_property_data_by_date_type('2019-02-01','2019-02-19','gas_boiler'))
+
+    # update_property_data_by_date_type('add', '2019-07-15', 'gas_other', '1213', '6fb50d7e-1e54-11e9-98ce-00163e10c840')
+    update_property_data_by_date_type('update', '2019-07-15', 'gas_other', '1230', '6fb50d7e-1e54-11e9-98ce-00163e10c840')
+    # update_property_data_by_date_type('delete', '2019-07-15', 'gas_other', '123', '6fb50d7e-1e54-11e9-98ce-00163e10c840')
+
