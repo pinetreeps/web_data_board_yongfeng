@@ -46,6 +46,7 @@ DB_SS_DATABASE = 'RealInfo'
 DB_SS_CHARSET = 'utf8'
 
 # --------------用户注册邀请码--------------
+# 普通用户
 APPLY_CODE = 'yongfeng2018'
 
 

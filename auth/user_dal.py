@@ -28,6 +28,18 @@ class User(UserMixin):
     def get_id(self):
         return self.uid
 
+    def get_ulevel(self):
+        if self.usergroup == 'admin':
+            u_level = '0'
+        elif self.usergroup == 'manager':
+            u_level = '1'
+        elif self.usergroup == 'default':
+            u_level = '2'
+        else:
+        # elif self.usergroup == 'guest':
+            u_level = '3'
+        return u_level
+
 
 #用户类操作类
 class UserDal:

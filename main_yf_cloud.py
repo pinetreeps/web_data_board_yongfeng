@@ -72,7 +72,10 @@ def login():
         else:
             return post_json(data='json校验失败')
         if user is not None:
-            return post_json(0, 'success', user.to_dict())
+            return_dict = user.to_dict()
+            return_dict['ulevel'] = user.get_ulevel()
+            return post_json(0, 'success', return_dict)
+            # return post_json(0, 'success', user.get_id())
         else:
             return post_json(data='用户名或密码错误')
     else:
@@ -93,7 +96,7 @@ def logout():
                 return post_json(data='输入参数不完整或者不正确')
         else:
             return post_json(data='json校验失败')
-        data = json.loads(request.get_data())
+        # data = json.loads(request.get_data())
         if success:
             return post_json(0, 'success', data='用户登出成功')
         else:
