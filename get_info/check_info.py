@@ -2011,13 +2011,7 @@ def check_room_data(data_dict):
         "room_id": data_dict.get('room_id'),
         "room_name": data_dict.get('room_name'),
     }
-
-    return_data = {
-        "check_name": PROPERTY_DICT.get(data_dict.get('check_id')),
-        "value_list": get_property_data_by_date_type(data_dict.get('start_date'), data_dict.get('end_date'), data_dict.get('check_id'))
-    }
-    # return test_data
-    return return_data
+    return test_data
 
 def update_room_data(data_dict):
     '''
@@ -2030,6 +2024,19 @@ def update_room_data(data_dict):
         "room_name": data_dict.get('room_name'),
     }
     return test_data
+
+def check_property_data(data_dict):
+    '''
+    :param data_dict:
+    :return:
+    '''
+
+    return_data = {
+        "check_name": PROPERTY_DICT.get(data_dict.get('check_id')),
+        "value_list": get_property_data_by_date_type(data_dict.get('start_date'), data_dict.get('end_date'), data_dict.get('check_id'))
+    }
+    # return test_data
+    return return_data
 
 def update_property_data(data_dict):
     '''

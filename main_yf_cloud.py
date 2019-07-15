@@ -912,7 +912,7 @@ def config_property_check():
             return post_json(data='json校验失败')
         # 获取数据
         if user is not None:
-            return post_json(0, 'success', check_info.update_property_data(data))
+            return post_json(0, 'success', check_info.check_property_data(data))
         else:
             return post_json(data='uid校验失败')
     else:
