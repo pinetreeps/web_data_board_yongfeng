@@ -44,6 +44,22 @@ def get_name_by_id(check_id):
         check_name = row1[0]
     return check_name
 
+def get_name_by_id_wlw(check_id):
+    '''
+    查询物联网信息表
+    get name by check_id
+    :return: name
+    '''
+    check_name = ''
+    data_conn = mysql_utils.Database()
+
+    sql1 = "select name from yf_bim_unity_wlw_id_check where unity_id = '{pid}'".format(pid=check_id)
+    row1 = data_conn.query_one(sql1)
+    logger.debug(row1)
+    if row1 != None:
+        check_name = row1[0]
+    return check_name
+
 def get_device_name_by_id(check_id):
     '''
     get name by check_id
@@ -809,7 +825,7 @@ def get_energy_electricity(check_id):
     用电情况通用查询接口2，使用唯一id 查询设备用电（空调、电器）
     :return: dict
     '''
-    check_name = get_name_by_id(check_id)
+    check_name = get_name_by_id_wlw(check_id)
     # # 测试数据
     energy_electricity_data = {
         "check_name": "{}".format(check_name),
